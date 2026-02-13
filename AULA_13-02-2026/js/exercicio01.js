@@ -3,7 +3,7 @@ const titulo = document.querySelector('.titulo');
 const container = document.querySelector('#container');
 const botao = document.querySelector('.botao');
 
-titulo.textContent = "Título Maneiro!";
+titulo.textContent = "Título Maneiro!!!";
 
 container.style.backgroundColor = "#7dc7cc";
 container.style.width = '94%';
