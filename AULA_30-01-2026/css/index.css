@@ -1,0 +1,61 @@
+:root{
+    --cor-fundo-pagina: #0b1220;
+    --cor-fundo-cartao: #111827;
+    --cor-texto-principal: #e5e7eb;
+    --cor-texto-suave: #9ca3af;
+}
+
+*{
+    box-sizing: border-box;
+}
+
+body{
+    margin: 0;
+    font-family: 'Roboto', 'Arial';
+    color: var(--cor-texto-principal);
+    background: var(--cor-fundo-pagina);
+}
+
+.container-pagina{
+    width: min(1100px, 90%);
+    margin: 0 auto;
+}
+
+.cabecalho-principal{
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: linear-gradient(180deg, #0ea5e9 0%, #111827 60%);
+    padding: clamp(2rem, 5vw, 5rem);
+}
+
+.botao--primeiro {
+    background-color: rgb(23, 220, 23);
+    border-radius: 5rem;
+    border-color: none;
+    box-shadow: none;
+    width: 150px;
+    height: 40px;
+}
+
+.formulario-inscricao_campo-email {
+    border-radius: 5rem;
+    background-color: #09101f23;
+    border-color: none;
+    box-shadow: none;
+    width: 300px;
+    height: 40px;
+    padding-left: 20px;
+    margin-right: 10px;
+}
+
+.cabelcalho-principal_subtitulo {
+    color: var(--cor-texto-suave);
+}
+
+.cabecalho-principal_descricao {
+    color: var(--cor-texto-suave);
+    font-size: 14px;
+}

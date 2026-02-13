@@ -1,0 +1,13 @@
+const prompt = require("prompt-sync")();
+
+let solicitacao = prompt("Digite a data ne seu nascimento (ano-mes-dia): ");
+
+let hoje = new Date();
+let nascimento = new Date(solicitacao);
+
+let idade = hoje.getFullYear() - nascimento.getFullYear();
+
+let mesAtual = hoje.getMonth() + 1;
+let mesNascimento = nascimento.getMonth();
+
+console.log("Sua idade é: " + idade)
