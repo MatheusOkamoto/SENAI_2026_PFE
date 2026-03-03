@@ -1,0 +1,54 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+.container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid black;
+  background-color: white;
+}
+
+.logo{
+  margin: 50px 50px -30px;
+  max-width: 170px;
+  max-height: 120px;
+}
+.titulo{
+  color: black;
+  margin-top: 50px;
+}
+.subtitulo{
+  color: rgb(86, 79, 79);
+  margin-top: -30px;
+  margin-bottom: 20px;
+}
+.campo{
+  background-color: lightgray;
+  color: white;
+  border-radius: 12px;
+  height: 25px;
+  padding-left: 10px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+.label{
+  color: black;
+  font-size: 9px;
+}
+.botao{
+  margin-top: 15px;
+  width: 170px;
+  height: 35px;
+  font-size: 12px;
+  color: lightgray;
+  margin-bottom: 55px;
+}
+.link{
+  margin-bottom: 25px;
+  margin-top: -25px;
+}
