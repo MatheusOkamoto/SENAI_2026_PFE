@@ -25,10 +25,10 @@ export default function Calculadora() {
 
     function dividir(e) {
         e.preventDefault();
-        if (Number(n1) < 1 || Number(n2)){
+        if (Number(n1) < 1 || Number(n2) < 1){
             return alert('Os números inseridos não são permitidos!')
         } else {
-        setResultado(Number(n1) / Number(n2) < 1);
+        setResultado(Number(n1) / Number(n2));
     }
     }
 
@@ -68,9 +68,11 @@ export default function Calculadora() {
 
     return (
         <>
+        <br />
+        <br />
             <h1>Calculadora</h1>
             <br />
-            <h2>Não são permitidos número negativos e/ou iguais a zero</h2>
+            <h2>Não são permitidos números negativos e/ou iguais a zero</h2>
             <br />
             <form>
                 <label>Número 1</label>
@@ -89,6 +91,8 @@ export default function Calculadora() {
 
                 <h2>Resultado: {resultado}</h2>
             </form>
+            <br />
+            <br />
         </>
     );
 }
