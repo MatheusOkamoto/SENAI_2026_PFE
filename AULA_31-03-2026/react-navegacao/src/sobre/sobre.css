@@ -1,0 +1,58 @@
+.sobre-wrapper {
+  padding: 60px 5%;
+}
+
+.sobre-container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 44px;
+  background-color: #ffffff;
+  border-radius: 22px;
+  box-shadow: 0 16px 35px rgba(0, 0, 0, 0.07);
+  border-top: 6px solid #d32f2f;
+  text-align: left;
+}
+
+.sobre-badge {
+  display: inline-flex;
+  margin-bottom: 16px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #fff3cd;
+  color: #9a6800;
+  font-weight: 600;
+}
+
+.sobre-container h2 {
+  color: #d32f2f;
+  font-size: 2.3rem;
+  margin-bottom: 24px;
+}
+
+.sobre-container p {
+  color: #555;
+  font-size: 1.08rem;
+  line-height: 1.85;
+}
+
+.sobre-container p + p {
+  margin-top: 18px;
+}
+
+@media (max-width: 768px) {
+  .sobre-wrapper {
+    padding: 36px 20px;
+  }
+
+  .sobre-container {
+    padding: 28px;
+  }
+
+  .sobre-container h2 {
+    font-size: 1.8rem;
+  }
+
+  .sobre-container p {
+    font-size: 1rem;
+  }
+}

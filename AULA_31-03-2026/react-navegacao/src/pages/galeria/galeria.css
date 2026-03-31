@@ -1,0 +1,104 @@
+.galeria-page {
+  padding: 54px 5% 70px;
+}
+
+.galeria-header {
+  max-width: 760px;
+  margin: 0 auto 34px;
+  text-align: center;
+}
+
+.galeria-badge {
+  display: inline-flex;
+  margin-bottom: 14px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(211, 47, 47, 0.08);
+  color: #d32f2f;
+  font-weight: 600;
+}
+
+.galeria-header h2 {
+  font-size: clamp(2rem, 3vw, 3rem);
+  color: #222;
+  margin-bottom: 12px;
+}
+
+.galeria-header p {
+  color: #666;
+  line-height: 1.7;
+}
+
+.galeria-produtos {
+  display: grid;
+  gap: 28px;
+}
+
+.galeria-card {
+  background: white;
+  border-radius: 22px;
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.08);
+  padding: 22px;
+}
+
+.galeria-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.galeria-grid img {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+.galeria-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.galeria-info span {
+  color: #d32f2f;
+  font-weight: 600;
+}
+
+.galeria-info h3 {
+  margin: 8px 0 10px;
+  font-size: 1.5rem;
+  color: #222;
+}
+
+.galeria-info p {
+  color: #666;
+  line-height: 1.6;
+}
+
+.galeria-info a {
+  flex-shrink: 0;
+  text-decoration: none;
+  padding: 12px 18px;
+  border-radius: 12px;
+  background: #ffc107;
+  color: #4a2400;
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .galeria-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .galeria-grid img {
+    height: 220px;
+  }
+
+  .galeria-info {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
