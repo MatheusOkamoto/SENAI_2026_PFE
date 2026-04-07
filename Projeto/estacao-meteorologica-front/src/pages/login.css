@@ -1,0 +1,209 @@
+:root {
+  --c1: #d9ed92;
+  --c2: #b5e48c;
+  --c3: #99d98c;
+  --c4: #76c893;
+  --c5: #52b69a;
+  --c6: #34a0a4;
+  --c7: #168aad;
+  --c8: #1a759f;
+  --c9: #1e6091;
+  --c10: #184e77;
+
+  --bg-card: #f8fff9;
+  --bg-form: #ffffff;
+  --text-dark: #184e77;
+  --text-mid: #1a759f;
+  --text-soft: #5f7f86;
+  --shadow: rgba(24, 78, 119, 0.18);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(217, 237, 146, 0.38), transparent 24%),
+    radial-gradient(circle at bottom right, rgba(22, 138, 173, 0.24), transparent 26%),
+    linear-gradient(135deg, #d9ed92 0%, #76c893 38%, #34a0a4 68%, #184e77 100%);
+}
+
+a {
+  text-decoration: none;
+}
+
+.container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
+}
+
+/* use seletor mais específico para evitar conflito */
+.container .card {
+  width: 100%;
+  max-width: 1040px;
+  min-height: 620px;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: space-between;
+  border-radius: 28px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 24px 60px var(--shadow);
+  backdrop-filter: blur(6px);
+}
+
+/* imagem realmente do lado esquerdo */
+.container .card > img {
+  width: 46%;
+  min-width: 340px;
+  max-width: 460px;
+  height: auto;
+  object-fit: cover;
+  display: block;
+  flex-shrink: 0;
+}
+
+/* formulário realmente do lado direito */
+.container .card > .formulario {
+  flex: 1;
+  min-width: 0;
+  background: var(--bg-form);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 56px 48px;
+}
+
+.formulario h2 {
+  font-size: 2.4rem;
+  color: var(--text-dark);
+  margin-bottom: 10px;
+  line-height: 1.05;
+}
+
+.formulario h2::after {
+  content: "Entre na sua conta";
+  display: block;
+  margin-top: 10px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-soft);
+}
+
+.formulario form {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.formulario label {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-mid);
+  margin-top: 4px;
+}
+
+.input {
+  width: 100%;
+  height: 52px;
+  padding: 0 16px;
+  border: 1.5px solid rgba(26, 117, 159, 0.14);
+  border-radius: 14px;
+  background: #f9fffd;
+  color: var(--text-dark);
+  font-size: 1rem;
+  outline: none;
+  transition: 0.25s ease;
+}
+
+.input:focus {
+  border-color: var(--c7);
+  box-shadow: 0 0 0 4px rgba(22, 138, 173, 0.12);
+  background: #ffffff;
+}
+
+.botao {
+  width: 100%;
+  height: 52px;
+  margin-top: 18px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--c8), var(--c6));
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.25s ease;
+  box-shadow: 0 12px 24px rgba(26, 117, 159, 0.22);
+}
+
+.botao:hover {
+  transform: translateY(-2px);
+}
+
+.formulario > a {
+  margin-top: 18px;
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-mid);
+  transition: 0.2s ease;
+}
+
+.formulario > a:hover {
+  color: var(--c7);
+}
+
+@media (max-width: 900px) {
+  .container .card {
+    flex-direction: column;
+    max-width: 560px;
+  }
+
+  .container .card > img {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    height: 240px;
+  }
+
+  .container .card > .formulario {
+    padding: 34px 26px;
+  }
+
+  .formulario h2 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .container {
+    padding: 18px;
+  }
+
+  .container .card > img {
+    height: 200px;
+  }
+
+  .container .card > .formulario {
+    padding: 28px 20px;
+  }
+
+  .formulario h2 {
+    font-size: 1.7rem;
+  }
+
+  .input,
+  .botao {
+    height: 48px;
+  }
+}
