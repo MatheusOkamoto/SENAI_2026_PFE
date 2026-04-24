@@ -1,0 +1,234 @@
+/* ============================= */
+/* CADASTRO */
+/* ============================= */
+
+.cadastro-page {
+  width: min(1200px, 100%);
+  margin: 28px auto 0;
+}
+
+.cadastro-container {
+  min-height: 560px;
+  padding: 42px;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 42px;
+
+  border-radius: 30px;
+  border: 1px solid var(--line);
+
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.52)),
+    radial-gradient(circle at top left, rgba(217, 237, 146, 0.24), transparent 34%),
+    radial-gradient(circle at bottom right, rgba(52, 160, 164, 0.14), transparent 38%);
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-soft);
+}
+
+.cadastro-info {
+  max-width: 440px;
+}
+
+.cadastro-info span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 18px;
+  padding: 8px 14px;
+
+  border-radius: 999px;
+  border: 1px solid rgba(26, 117, 159, 0.12);
+
+  background: rgba(255, 255, 255, 0.76);
+  color: var(--text-mid);
+
+  font-size: 0.8rem;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+
+  box-shadow: 0 8px 18px rgba(24, 78, 119, 0.07);
+}
+
+.cadastro-info h3 {
+  margin: 0;
+
+  color: var(--text-strong);
+
+  font-size: clamp(2.2rem, 4vw, 4rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.07em;
+}
+
+.cadastro-info p {
+  margin: 20px 0 0;
+  max-width: 390px;
+
+  color: var(--text-soft);
+
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.cadastro-form {
+  width: 100%;
+  max-width: 520px;
+  justify-self: end;
+
+  padding: 26px;
+  border-radius: 26px;
+  border: 1px solid rgba(24, 78, 119, 0.1);
+
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.86), rgba(245, 255, 250, 0.68)),
+    radial-gradient(circle at top right, rgba(181, 228, 140, 0.18), transparent 36%);
+
+  box-shadow: 0 12px 28px rgba(24, 78, 119, 0.08);
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cadastro-form label {
+  margin-top: 10px;
+
+  color: var(--text-soft);
+
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.cadastro-form input {
+  width: 100%;
+  padding: 14px 16px;
+
+  border-radius: 16px;
+  border: 1px solid rgba(24, 78, 119, 0.14);
+  background: rgba(255, 255, 255, 0.76);
+
+  color: var(--text-strong);
+
+  font-size: 0.98rem;
+  font-weight: 600;
+
+  outline: none;
+
+  transition:
+    border-color 0.22s ease,
+    background 0.22s ease,
+    box-shadow 0.22s ease,
+    transform 0.22s ease;
+}
+
+.cadastro-form input::placeholder {
+  color: rgba(95, 127, 134, 0.74);
+  font-weight: 500;
+}
+
+.cadastro-form input:hover {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(22, 138, 173, 0.2);
+}
+
+.cadastro-form input:focus {
+  background: #ffffff;
+  border-color: rgba(26, 117, 159, 0.42);
+  box-shadow: 0 0 0 4px rgba(22, 138, 173, 0.12);
+  transform: translateY(-1px);
+}
+
+.cadastro-form button {
+  margin-top: 22px;
+  min-height: 48px;
+  padding: 0 20px;
+
+  border: none;
+  border-radius: 999px;
+
+  background: linear-gradient(135deg, var(--c8), var(--c6));
+  color: #ffffff;
+
+  font-size: 1rem;
+  font-weight: 900;
+
+  cursor: pointer;
+
+  box-shadow: 0 14px 28px rgba(26, 117, 159, 0.2);
+
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    background 0.22s ease;
+}
+
+.cadastro-form button:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, var(--c9), var(--c7));
+  box-shadow: var(--shadow-hover);
+}
+
+.cadastro-form button:active {
+  transform: translateY(0);
+}
+
+/* ============================= */
+/* RESPONSIVO */
+/* ============================= */
+
+@media (max-width: 900px) {
+  .cadastro-container {
+    grid-template-columns: 1fr;
+    padding: 30px;
+    gap: 28px;
+  }
+
+  .cadastro-info {
+    max-width: none;
+    text-align: center;
+  }
+
+  .cadastro-info p {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cadastro-form {
+    max-width: 100%;
+    justify-self: stretch;
+  }
+}
+
+@media (max-width: 600px) {
+  .cadastro-page {
+    margin-top: 22px;
+  }
+
+  .cadastro-container {
+    padding: 20px;
+    border-radius: 24px;
+  }
+
+  .cadastro-info h3 {
+    font-size: 2.2rem;
+  }
+
+  .cadastro-form {
+    padding: 20px;
+    border-radius: 22px;
+  }
+
+  .cadastro-form input {
+    padding: 13px 14px;
+    border-radius: 14px;
+  }
+}
