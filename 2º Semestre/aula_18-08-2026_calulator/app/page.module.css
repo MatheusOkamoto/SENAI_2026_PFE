@@ -1,0 +1,163 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #0b0b0b;
+  padding: 20px;
+}
+
+.calculadora {
+  width: 100%;
+  max-width: 390px;
+
+  background: #151515;
+
+  border: 1px solid #2a2a2a;
+  border-radius: 20px;
+
+  padding: 30px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.calculadora h1 {
+  margin: 0 0 15px 0;
+
+  color: #ffffff;
+
+  text-align: center;
+
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.calculadora label {
+  color: #b3b3b3;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  margin-top: 5px;
+}
+
+.calculadora input {
+  width: 100%;
+
+  background: #1f1f1f;
+  color: #ffffff;
+
+  border: 1px solid #333333;
+  border-radius: 10px;
+
+  padding: 13px;
+
+  font-size: 16px;
+
+  outline: none;
+
+  transition: 0.2s;
+}
+
+.calculadora input::placeholder {
+  color: #666666;
+}
+
+.calculadora input:focus {
+  border-color: #666666;
+  background: #242424;
+}
+
+.botoes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 10px;
+
+  margin-top: 12px;
+}
+
+.botoes button {
+  height: 52px;
+
+  background: #242424;
+  color: white;
+
+  border: 1px solid #333333;
+  border-radius: 10px;
+
+  font-size: 20px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.botoes button:hover {
+  background: #333333;
+
+  transform: translateY(-2px);
+}
+
+.botoes button:active {
+  transform: scale(0.97);
+}
+
+.limpar {
+  width: 100%;
+
+  background: #111111;
+  color: #aaaaaa;
+
+  border: 1px solid #333333;
+  border-radius: 10px;
+
+  padding: 12px;
+
+  font-size: 15px;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.limpar:hover {
+  background: #202020;
+  color: white;
+}
+
+.resultado {
+  margin: 10px 0 0 0;
+
+  background: #101010;
+  color: #ffffff;
+
+  border: 1px solid #2d2d2d;
+  border-radius: 10px;
+
+  padding: 15px;
+
+  text-align: center;
+
+  font-size: 18px;
+}
+
+.erro {
+  margin: 10px 0 0 0;
+
+  background: #2a1111;
+  color: #ff6b6b;
+
+  border: 1px solid #5a2020;
+  border-radius: 10px;
+
+  padding: 12px;
+
+  font-size: 14px;
+  text-align: center;
+}
