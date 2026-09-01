@@ -1,0 +1,1111 @@
+/* =========================================================
+   CONFIGURAÇÕES GERAIS
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+
+    background: #ffffff;
+    color: #202020;
+
+    overflow-x: hidden;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.container {
+    width: min(1180px, calc(100% - 48px));
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   BARRA SUPERIOR
+========================================================= */
+
+.topBar {
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+
+    background: #252525;
+    color: #ffffff;
+}
+
+.topBarContent {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    letter-spacing: 0.08em;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header {
+    position: sticky;
+    top: 0;
+
+    z-index: 100;
+
+    background: rgba(255, 255, 255, 0.97);
+
+    border-bottom: 1px solid #e8e8e8;
+
+    backdrop-filter: blur(10px);
+}
+
+.headerContent {
+    height: 82px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+/* MARCA */
+
+.brand {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+}
+
+.brandMark {
+    background: #e30613;
+    color: #ffffff;
+
+    padding: 10px 14px;
+
+    font-size: 20px;
+    font-weight: 900;
+
+    letter-spacing: -1px;
+}
+
+.brandInfo {
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+.brandInfo strong {
+    font-size: 15px;
+}
+
+.brandInfo span {
+    color: #777777;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   NAVEGAÇÃO
+========================================================= */
+
+.navigation > ul {
+    display: flex;
+    align-items: center;
+
+    gap: 38px;
+
+    list-style: none;
+}
+
+.navigation li {
+    position: relative;
+}
+
+.navigation a,
+.navTitle {
+    color: #303030;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: color 0.2s ease;
+}
+
+.navigation > ul > li > a:hover,
+.navTitle:hover {
+    color: #e30613;
+}
+
+.arrow {
+    display: inline-block;
+
+    margin-left: 6px;
+
+    color: #999999;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   DROPDOWN
+========================================================= */
+
+.dropdown {
+    position: absolute;
+
+    top: 27px;
+    left: -18px;
+
+    width: 200px;
+
+    padding: 8px;
+
+    background: #ffffff;
+
+    border: 1px solid #ededed;
+
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.12);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform: translateY(-5px);
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+}
+
+.navItemDropdown:hover .dropdown {
+    opacity: 1;
+    visibility: visible;
+
+    transform: translateY(0);
+}
+
+.dropdown a {
+    display: block;
+
+    padding: 12px;
+
+    color: #333333;
+
+    font-size: 13px;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.dropdown a:hover {
+    background: #f5f5f5;
+
+    color: #e30613;
+}
+
+
+/* =========================================================
+   LABELS
+========================================================= */
+
+.sectionLabel {
+    display: inline-block;
+
+    margin-bottom: 17px;
+
+    color: #e30613;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 0.16em;
+}
+
+.lightLabel {
+    display: inline-block;
+
+    margin-bottom: 16px;
+
+    color: #ffc3c6;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 0.16em;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+    background: #ffffff;
+}
+
+.heroGrid {
+    min-height: 610px;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 0.92fr)
+        minmax(0, 1.08fr);
+
+    align-items: stretch;
+}
+
+
+/* TEXTO */
+
+.heroText {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    padding: 80px 70px 80px 0;
+}
+
+.heroText h1 {
+    max-width: 600px;
+
+    margin-bottom: 25px;
+
+    color: #202020;
+
+    font-size: clamp(46px, 5vw, 68px);
+    font-weight: 750;
+
+    line-height: 1.02;
+
+    letter-spacing: -0.05em;
+}
+
+.heroText h1 span {
+    color: #e30613;
+}
+
+.heroText > p {
+    max-width: 540px;
+
+    margin-bottom: 33px;
+
+    color: #666666;
+
+    font-size: 17px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   BOTÕES
+========================================================= */
+
+.heroActions {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+}
+
+.primaryButton,
+.secondaryButton {
+    min-height: 51px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 23px;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.primaryButton {
+    gap: 35px;
+
+    background: #e30613;
+    color: #ffffff;
+
+    border: 1px solid #e30613;
+}
+
+.primaryButton span {
+    font-size: 18px;
+}
+
+.primaryButton:hover {
+    background: #b90610;
+
+    border-color: #b90610;
+
+    transform: translateY(-2px);
+}
+
+.secondaryButton {
+    background: transparent;
+
+    border: 1px solid #d1d1d1;
+
+    color: #333333;
+}
+
+.secondaryButton:hover {
+    background: #f6f6f6;
+
+    border-color: #bbbbbb;
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   IMAGEM PRINCIPAL
+========================================================= */
+
+.heroImage {
+    position: relative;
+
+    min-height: 610px;
+
+    overflow: hidden;
+
+    background: #eeeeee;
+}
+
+.heroImage > img {
+    object-fit: cover;
+
+    object-position: center;
+}
+
+.heroImage::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            to top,
+            rgba(0, 0, 0, 0.25),
+            transparent 42%
+        );
+}
+
+.heroImageTag {
+    position: absolute;
+
+    z-index: 3;
+
+    left: 32px;
+    bottom: 31px;
+
+    min-width: 220px;
+
+    padding: 17px 20px;
+
+    display: flex;
+    flex-direction: column;
+
+    background: rgba(255, 255, 255, 0.95);
+
+    border-left: 4px solid #e30613;
+}
+
+.heroImageTag span {
+    margin-bottom: 5px;
+
+    color: #e30613;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 0.14em;
+}
+
+.heroImageTag strong {
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   FAIXA VERMELHA
+========================================================= */
+
+.redStrip {
+    background: #e30613;
+    color: #ffffff;
+}
+
+.redStripContent {
+    min-height: 108px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 30px;
+}
+
+.redStripContent > div:not(.redStripDivider) {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+.redStripContent strong {
+    font-size: 15px;
+}
+
+.redStripContent span {
+    color: #ffd4d6;
+
+    font-size: 11px;
+}
+
+.redStripDivider {
+    width: 1px;
+    height: 38px;
+
+    background: rgba(255, 255, 255, 0.35);
+}
+
+
+/* =========================================================
+   ACESSO RÁPIDO
+========================================================= */
+
+.quickAccess {
+    padding: 105px 0 115px;
+
+    background: #f6f6f6;
+}
+
+.sectionHeader {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    gap: 70px;
+
+    margin-bottom: 45px;
+}
+
+.sectionHeader h2 {
+    font-size: clamp(32px, 4vw, 43px);
+
+    line-height: 1.1;
+
+    letter-spacing: -0.04em;
+}
+
+.sectionHeader > p {
+    max-width: 340px;
+
+    margin-bottom: 4px;
+
+    color: #757575;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   CARDS
+========================================================= */
+
+.accessGrid {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 15px;
+}
+
+.accessCard {
+    min-height: 300px;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 27px;
+
+    background: #ffffff;
+
+    border: 1px solid #e8e8e8;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.accessCard:hover {
+    transform: translateY(-6px);
+
+    border-color: #e30613;
+
+    box-shadow: 0 16px 45px rgba(0, 0, 0, 0.08);
+}
+
+.cardTop {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 35px;
+}
+
+.cardNumber {
+    color: #aeaeae;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing: 0.12em;
+}
+
+.cardArrow {
+    color: #bcbcbc;
+
+    font-size: 19px;
+
+    transition: color 0.2s ease;
+}
+
+.accessCard:hover .cardArrow {
+    color: #e30613;
+}
+
+.cardSymbol {
+    width: 46px;
+    height: 46px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 27px;
+
+    background: #fff0f1;
+    color: #e30613;
+
+    font-size: 21px;
+    font-weight: 600;
+}
+
+.accessCard h3 {
+    margin-bottom: 10px;
+
+    font-size: 18px;
+
+    letter-spacing: -0.015em;
+}
+
+.accessCard p {
+    max-width: 210px;
+
+    color: #797979;
+
+    font-size: 13px;
+
+    line-height: 1.65;
+}
+
+
+/* =========================================================
+   VIDA ESCOLAR
+========================================================= */
+
+.schoolSection {
+    padding: 115px 0;
+
+    background: #ffffff;
+}
+
+.schoolGrid {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.05fr)
+        minmax(0, 0.95fr);
+
+    align-items: center;
+
+    gap: 90px;
+}
+
+
+/* IMAGEM */
+
+.schoolImage {
+    position: relative;
+
+    min-height: 530px;
+
+    overflow: hidden;
+
+    background: #eeeeee;
+}
+
+.schoolImage > img {
+    object-fit: cover;
+
+    object-position: center;
+}
+
+
+/* TEXTO */
+
+.schoolText h2 {
+    max-width: 480px;
+
+    margin-bottom: 25px;
+
+    font-size: clamp(35px, 4vw, 49px);
+
+    line-height: 1.08;
+
+    letter-spacing: -0.045em;
+}
+
+.schoolText > p {
+    max-width: 520px;
+
+    margin-bottom: 17px;
+
+    color: #696969;
+
+    font-size: 15px;
+
+    line-height: 1.75;
+}
+
+
+/* DETALHES */
+
+.schoolDetails {
+    margin-top: 38px;
+
+    border-top: 1px solid #dedede;
+}
+
+.schoolDetails > div {
+    min-height: 78px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 23px;
+
+    border-bottom: 1px solid #dedede;
+}
+
+.schoolDetails > div > span {
+    color: #e30613;
+
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.schoolDetails strong {
+    display: block;
+
+    margin-bottom: 3px;
+
+    font-size: 14px;
+}
+
+.schoolDetails p {
+    color: #777777;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   PROJETO
+========================================================= */
+
+.projectSection {
+    padding: 85px 0;
+
+    background: #e30613;
+    color: #ffffff;
+}
+
+.projectGrid {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 100px;
+
+    align-items: center;
+}
+
+.projectGrid h2 {
+    max-width: 500px;
+
+    font-size: clamp(35px, 4vw, 47px);
+
+    line-height: 1.08;
+
+    letter-spacing: -0.04em;
+}
+
+.projectText > p {
+    max-width: 510px;
+
+    color: #ffe4e5;
+
+    font-size: 14px;
+
+    line-height: 1.75;
+}
+
+
+/* TECNOLOGIAS */
+
+.techList {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 9px;
+
+    margin-top: 27px;
+}
+
+.techList span {
+    padding: 9px 14px;
+
+    border: 1px solid rgba(255, 255, 255, 0.45);
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer {
+    background: #222222;
+    color: #ffffff;
+}
+
+.footerMain {
+    min-height: 120px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-bottom: 1px solid #3b3b3b;
+}
+
+.footerBrand {
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+}
+
+.footerLogo {
+    background: #e30613;
+
+    padding: 9px 12px;
+
+    font-size: 17px;
+    font-weight: 900;
+
+    letter-spacing: -1px;
+}
+
+.footerBrand > div:last-child {
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+.footerBrand strong {
+    font-size: 13px;
+}
+
+.footerBrand span {
+    color: #999999;
+
+    font-size: 10px;
+}
+
+.footerLinks {
+    display: flex;
+
+    gap: 32px;
+}
+
+.footerLinks a {
+    color: #c6c6c6;
+
+    font-size: 12px;
+
+    transition: color 0.2s ease;
+}
+
+.footerLinks a:hover {
+    color: #ffffff;
+}
+
+.footerBottom {
+    min-height: 65px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.footerBottom span {
+    color: #797979;
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1000px) {
+
+    .heroGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .heroText {
+        padding: 80px 0;
+    }
+
+    .heroImage {
+        min-height: 500px;
+    }
+
+    .accessGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .schoolGrid {
+        grid-template-columns: 1fr;
+
+        gap: 55px;
+    }
+
+    .schoolImage {
+        min-height: 500px;
+    }
+
+    .projectGrid {
+        gap: 50px;
+    }
+}
+
+
+/* =========================================================
+   CELULAR
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .container {
+        width: min(100% - 30px, 1180px);
+    }
+
+
+    /* HEADER */
+
+    .topBar {
+        display: none;
+    }
+
+    .header {
+        position: relative;
+    }
+
+    .headerContent {
+        height: auto;
+
+        flex-direction: column;
+        align-items: flex-start;
+
+        gap: 18px;
+
+        padding: 16px 0 18px;
+    }
+
+    .navigation {
+        width: 100%;
+    }
+
+    .navigation > ul {
+        gap: 25px;
+    }
+
+
+    /* HERO */
+
+    .heroText {
+        padding: 65px 0;
+    }
+
+    .heroText h1 {
+        font-size: 43px;
+    }
+
+    .heroText > p {
+        font-size: 15px;
+    }
+
+    .heroActions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .primaryButton,
+    .secondaryButton {
+        width: 100%;
+    }
+
+    .heroImage {
+        min-height: 390px;
+    }
+
+    .heroImageTag {
+        left: 18px;
+        bottom: 18px;
+    }
+
+
+    /* FAIXA */
+
+    .redStripContent {
+        flex-direction: column;
+        align-items: flex-start;
+
+        padding: 30px 0;
+
+        gap: 18px;
+    }
+
+    .redStripDivider {
+        width: 100%;
+        height: 1px;
+    }
+
+
+    /* ACESSO */
+
+    .quickAccess {
+        padding: 75px 0;
+    }
+
+    .sectionHeader {
+        align-items: flex-start;
+        flex-direction: column;
+
+        gap: 15px;
+    }
+
+    .accessGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .accessCard {
+        min-height: 250px;
+    }
+
+
+    /* ESCOLA */
+
+    .schoolSection {
+        padding: 75px 0;
+    }
+
+    .schoolImage {
+        min-height: 360px;
+    }
+
+
+    /* PROJETO */
+
+    .projectSection {
+        padding: 70px 0;
+    }
+
+    .projectGrid {
+        grid-template-columns: 1fr;
+
+        gap: 35px;
+    }
+
+
+    /* FOOTER */
+
+    .footerMain {
+        align-items: flex-start;
+        flex-direction: column;
+
+        gap: 25px;
+
+        padding: 35px 0;
+    }
+
+    .footerBottom {
+        align-items: flex-start;
+        flex-direction: column;
+
+        justify-content: center;
+
+        gap: 7px;
+
+        padding: 18px 0;
+    }
+}
