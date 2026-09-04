@@ -140,8 +140,13 @@ a {
     position: relative;
 }
 
-.navigation a,
+.navigation > ul > li > a,
 .navTitle {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 10px 14px;
+
     color: #303030;
 
     font-size: 14px;
@@ -149,11 +154,19 @@ a {
 
     cursor: pointer;
 
-    transition: color 0.2s ease;
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
 }
 
 .navigation > ul > li > a:hover,
 .navTitle:hover {
+    background: #f2f2f2;
+    color: #e30613;
+}
+
+.navItemDropdown:hover .navTitle {
+    background: #f2f2f2;
     color: #e30613;
 }
 
@@ -172,10 +185,29 @@ a {
    DROPDOWN
 ========================================================= */
 
+.navItemDropdown {
+    position: relative;
+}
+
+
+/* Ponte invisível entre "Alunos/Notas" e a caixa */
+.navItemDropdown::after {
+    content: "";
+
+    position: absolute;
+
+    top: 100%;
+    left: -18px;
+
+    width: 200px;
+    height: 12px;
+}
+
+
 .dropdown {
     position: absolute;
 
-    top: 27px;
+    top: calc(100% + 10px);
     left: -18px;
 
     width: 200px;
@@ -196,8 +228,13 @@ a {
     transition:
         opacity 0.2s ease,
         transform 0.2s ease;
+
+    z-index: 200;
 }
 
+
+/* Mantém a caixa aberta enquanto o mouse
+   estiver no título OU dentro do dropdown */
 .navItemDropdown:hover .dropdown {
     opacity: 1;
     visibility: visible;
@@ -205,8 +242,12 @@ a {
     transform: translateY(0);
 }
 
+
+/* Cada opção do dropdown */
 .dropdown a {
     display: block;
+
+    width: 100%;
 
     padding: 12px;
 
@@ -219,12 +260,13 @@ a {
         color 0.2s ease;
 }
 
+
+/* Hover cinza ocupando a opção inteira */
 .dropdown a:hover {
-    background: #f5f5f5;
+    background: #f2f2f2;
 
     color: #e30613;
 }
-
 
 /* =========================================================
    LABELS
@@ -559,6 +601,7 @@ a {
     gap: 15px;
 }
 
+
 .accessCard {
     min-height: 300px;
 
@@ -574,16 +617,42 @@ a {
     transition:
         transform 0.25s ease,
         box-shadow 0.25s ease,
-        border-color 0.25s ease;
+        border-color 0.25s ease,
+        background 0.25s ease,
+        color 0.25s ease;
 }
 
+
+/* CARD INTEIRO VERMELHO NO HOVER */
 .accessCard:hover {
     transform: translateY(-6px);
 
+    background: #e30613;
+
     border-color: #e30613;
+
+    color: #ffffff;
 
     box-shadow: 0 16px 45px rgba(0, 0, 0, 0.08);
 }
+
+
+/* Textos ficam brancos */
+.accessCard:hover h3,
+.accessCard:hover p,
+.accessCard:hover .cardNumber,
+.accessCard:hover .cardArrow {
+    color: #ffffff;
+}
+
+
+/* Quadradinho do símbolo fica branco */
+.accessCard:hover .cardSymbol {
+    background: #ffffff;
+
+    color: #e30613;
+}
+
 
 .cardTop {
     display: flex;
@@ -593,6 +662,7 @@ a {
     margin-bottom: 35px;
 }
 
+
 .cardNumber {
     color: #aeaeae;
 
@@ -600,7 +670,10 @@ a {
     font-weight: 700;
 
     letter-spacing: 0.12em;
+
+    transition: color 0.2s ease;
 }
+
 
 .cardArrow {
     color: #bcbcbc;
@@ -610,9 +683,12 @@ a {
     transition: color 0.2s ease;
 }
 
+
+/* GARANTE QUE A SETA NÃO SUMA */
 .accessCard:hover .cardArrow {
-    color: #e30613;
+    color: #ffffff;
 }
+
 
 .cardSymbol {
     width: 46px;
@@ -625,11 +701,17 @@ a {
     margin-bottom: 27px;
 
     background: #fff0f1;
+
     color: #e30613;
 
     font-size: 21px;
     font-weight: 600;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
 }
+
 
 .accessCard h3 {
     margin-bottom: 10px;
@@ -637,7 +719,10 @@ a {
     font-size: 18px;
 
     letter-spacing: -0.015em;
+
+    transition: color 0.2s ease;
 }
+
 
 .accessCard p {
     max-width: 210px;
@@ -647,6 +732,8 @@ a {
     font-size: 13px;
 
     line-height: 1.65;
+
+    transition: color 0.2s ease;
 }
 
 
@@ -1108,4 +1195,712 @@ a {
 
         padding: 18px 0;
     }
+}
+
+/* =========================================================
+   CADASTRO DE ALUNOS
+========================================================= */
+
+.cadAlunoPage {
+    background: #f6f6f6;
+
+    min-height: calc(100vh - 116px);
+}
+
+
+.cadAlunoSection {
+    padding: 85px 0 110px;
+}
+
+
+.cadAlunoGrid {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 0.85fr)
+        minmax(0, 1.15fr);
+
+    gap: 90px;
+
+    align-items: start;
+}
+
+
+/* =========================================================
+   INTRODUÇÃO
+========================================================= */
+
+.cadAlunoIntro {
+    padding-top: 35px;
+}
+
+
+.cadAlunoIntro h1 {
+    max-width: 500px;
+
+    margin-bottom: 25px;
+
+    color: #202020;
+
+    font-size: clamp(45px, 5vw, 65px);
+    font-weight: 750;
+
+    line-height: 1.02;
+
+    letter-spacing: -0.05em;
+}
+
+
+.cadAlunoIntro h1 span {
+    color: #e30613;
+}
+
+
+.cadAlunoIntro > p {
+    max-width: 430px;
+
+    color: #696969;
+
+    font-size: 15px;
+
+    line-height: 1.75;
+}
+
+
+/* INFORMAÇÃO ABAIXO DO TEXTO */
+
+.cadAlunoInfo {
+    max-width: 430px;
+
+    margin-top: 50px;
+    padding-top: 24px;
+
+    display: flex;
+    align-items: flex-start;
+
+    gap: 22px;
+
+    border-top: 1px solid #d9d9d9;
+}
+
+
+.cadAlunoInfo > span {
+    color: #e30613;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 0.1em;
+}
+
+
+.cadAlunoInfo strong {
+    display: block;
+
+    margin-bottom: 6px;
+
+    font-size: 14px;
+}
+
+
+.cadAlunoInfo p {
+    color: #777777;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   ÁREA DO FORMULÁRIO
+========================================================= */
+
+.cadAlunoFormArea {
+    background: #ffffff;
+
+    border: 1px solid #e5e5e5;
+
+    padding: 42px;
+}
+
+
+/* CABEÇALHO DO FORMULÁRIO */
+
+.formHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 30px;
+
+    margin-bottom: 40px;
+    padding-bottom: 25px;
+
+    border-bottom: 1px solid #e5e5e5;
+}
+
+
+.formHeader > div > span {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #e30613;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 0.16em;
+}
+
+
+.formHeader h2 {
+    color: #202020;
+
+    font-size: 27px;
+
+    letter-spacing: -0.03em;
+}
+
+
+.formNumber {
+    color: #c7c7c7;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: 0.1em;
+}
+
+
+/* =========================================================
+   FORMULÁRIO
+========================================================= */
+
+.cadAlunoForm {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 25px 20px;
+}
+
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+
+    gap: 9px;
+}
+
+
+.formGroupFull {
+    grid-column: 1 / -1;
+}
+
+
+.formGroup label {
+    color: #333333;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: 0.04em;
+}
+
+
+.formGroup input {
+    width: 100%;
+    height: 53px;
+
+    padding: 0 15px;
+
+    background: #fafafa;
+
+    border: 1px solid #dddddd;
+    outline: none;
+
+    color: #202020;
+
+    font-family: inherit;
+    font-size: 14px;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.formGroup input::placeholder {
+    color: #aaaaaa;
+}
+
+
+.formGroup input:hover {
+    border-color: #bfbfbf;
+}
+
+
+.formGroup input:focus {
+    background: #ffffff;
+
+    border-color: #e30613;
+
+    box-shadow: 0 0 0 3px rgba(227, 6, 19, 0.07);
+}
+
+
+/* =========================================================
+   BOTÃO
+========================================================= */
+
+.formActions {
+    grid-column: 1 / -1;
+
+    margin-top: 10px;
+    padding-top: 27px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 25px;
+
+    border-top: 1px solid #e5e5e5;
+}
+
+
+.formActions > span {
+    color: #888888;
+
+    font-size: 11px;
+
+    line-height: 1.5;
+}
+
+
+.formActions button {
+    min-width: 175px;
+    height: 51px;
+
+    padding: 0 21px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 30px;
+
+    background: #e30613;
+
+    border: 1px solid #e30613;
+
+    color: #ffffff;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.formActions button span {
+    font-size: 18px;
+}
+
+
+.formActions button:hover {
+    background: #b90610;
+
+    border-color: #b90610;
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   CADASTRO - TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .cadAlunoGrid {
+        grid-template-columns: 1fr;
+
+        gap: 50px;
+    }
+
+
+    .cadAlunoIntro {
+        padding-top: 0;
+    }
+
+
+    .cadAlunoIntro > p,
+    .cadAlunoInfo {
+        max-width: 600px;
+    }
+}
+
+
+/* =========================================================
+   CADASTRO - CELULAR
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .cadAlunoSection {
+        padding: 60px 0 75px;
+    }
+
+
+    .cadAlunoGrid {
+        gap: 40px;
+    }
+
+
+    .cadAlunoIntro h1 {
+        font-size: 43px;
+    }
+
+
+    .cadAlunoFormArea {
+        padding: 28px 20px;
+    }
+
+
+    .cadAlunoForm {
+        grid-template-columns: 1fr;
+    }
+
+
+    .formGroupFull {
+        grid-column: auto;
+    }
+
+
+    .formActions {
+        grid-column: auto;
+
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+
+    .formActions button {
+        width: 100%;
+    }
+}
+
+/* =========================================================
+   LISTA DE NOTAS
+========================================================= */
+
+.listaPage {
+    min-height: calc(100vh - 116px);
+
+    background: #f6f6f6;
+}
+
+
+.listaSection {
+    padding: 80px 0 110px;
+}
+
+
+/* =========================================================
+   CABEÇALHO DA PÁGINA
+========================================================= */
+
+.listaHeader {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    gap: 40px;
+
+    margin-bottom: 45px;
+}
+
+
+.listaHeader h1 {
+    margin-bottom: 18px;
+
+    color: #202020;
+
+    font-size: clamp(42px, 5vw, 62px);
+    font-weight: 750;
+
+    line-height: 1.02;
+
+    letter-spacing: -0.05em;
+}
+
+
+.listaHeader h1 span {
+    color: #e30613;
+}
+
+
+.listaHeader p {
+    max-width: 500px;
+
+    color: #696969;
+
+    font-size: 14px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   ÁREA DA TABELA
+========================================================= */
+
+.tabelaArea {
+    padding: 35px;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e5e5;
+}
+
+
+.tabelaHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 30px;
+
+    margin-bottom: 30px;
+    padding-bottom: 22px;
+
+    border-bottom: 1px solid #e5e5e5;
+}
+
+
+.tabelaHeader > div > span {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #e30613;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 0.16em;
+}
+
+
+.tabelaHeader h2 {
+    color: #202020;
+
+    font-size: 25px;
+
+    letter-spacing: -0.03em;
+}
+
+
+.tabelaQuantidade {
+    color: #999999;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing: 0.1em;
+}
+
+
+/* =========================================================
+   TABELA
+========================================================= */
+
+.tabelaResponsiva {
+    width: 100%;
+
+    overflow-x: auto;
+}
+
+
+.tabelaSistema {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    min-width: 760px;
+}
+
+
+.tabelaSistema thead {
+    background: #f6f6f6;
+}
+
+
+.tabelaSistema th {
+    padding: 15px 16px;
+
+    text-align: left;
+
+    color: #555555;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 0.08em;
+
+    text-transform: uppercase;
+
+    border-bottom: 1px solid #dddddd;
+}
+
+
+.tabelaSistema td {
+    padding: 19px 16px;
+
+    color: #555555;
+
+    font-size: 13px;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+
+.tabelaSistema tbody tr {
+    transition: background 0.2s ease;
+}
+
+
+.tabelaSistema tbody tr:hover {
+    background: #fafafa;
+}
+
+
+.tabelaSistema td strong {
+    color: #202020;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   BOTÕES DA TABELA
+========================================================= */
+
+.acoesTabela {
+    display: flex;
+
+    gap: 8px;
+}
+
+
+.acoesTabela button {
+    min-height: 35px;
+
+    padding: 0 13px;
+
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.botaoEditar {
+    background: #ffffff;
+
+    color: #333333;
+
+    border: 1px solid #cccccc;
+}
+
+
+.botaoEditar:hover {
+    background: #f2f2f2;
+
+    border-color: #aaaaaa;
+}
+
+
+.botaoExcluir {
+    background: #fff5f5;
+
+    color: #e30613;
+
+    border: 1px solid #f2c5c8;
+}
+
+
+.botaoExcluir:hover {
+    background: #e30613;
+
+    color: #ffffff;
+
+    border-color: #e30613;
+}
+
+
+/* =========================================================
+   LISTA - CELULAR
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .listaSection {
+        padding: 60px 0 75px;
+    }
+
+
+    .listaHeader h1 {
+        font-size: 43px;
+    }
+
+
+    .tabelaArea {
+        padding: 25px 18px;
+    }
+
+
+    .tabelaHeader {
+        flex-direction: column;
+
+        gap: 15px;
+    }
+
+}
+
+
+.mediaNota {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 45px;
+    height: 32px;
+
+    padding: 0 10px;
+
+    background: #fff0f1;
+
+    color: #e30613;
+
+    font-size: 13px;
+    font-weight: 800;
+
+    border: 1px solid #f2c5c8;
 }
