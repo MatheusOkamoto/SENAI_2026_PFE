@@ -1,18 +1,53 @@
 'use client';
 
 
-import { useState } from 'react';
+import {
 
-import { useRouter } from 'next/navigation';
+    useEffect,
 
-import Header from '../components/header';
+    useState
 
-
-
-export default function CadAlunos() {
+} from 'react';
 
 
-    const router = useRouter();
+import {
+
+    useParams,
+
+    useRouter
+
+} from 'next/navigation';
+
+
+import Header from '../../components/header';
+
+
+
+export default function EditAlunos() {
+
+
+    const params =
+        useParams();
+
+
+    const router =
+        useRouter();
+
+
+
+    /*
+        Se a URL for:
+
+        /editalunos/5
+
+        então:
+
+        params.id = "5"
+    */
+
+    const id =
+        params.id;
+
 
 
     const [nome, setNome] =
@@ -31,54 +66,193 @@ export default function CadAlunos() {
         useState('');
 
 
+    const [carregando, setCarregando] =
+        useState(true);
+
+
     const [salvando, setSalvando] =
         useState(false);
 
 
 
-    async function salvarAluno(e) {
+    /* =====================================================
+       CARREGAR DADOS DO ALUNO
+    ===================================================== */
+
+    useEffect(() => {
+
+
+        async function carregarAluno() {
+
+
+            try {
+
+
+                const resposta =
+                    await fetch(
+
+                        `/api/alunos?id=${id}`,
+
+                        {
+
+                            cache:
+                                'no-store'
+
+                        }
+
+                    );
+
+
+
+                const dados =
+                    await resposta.json();
+
+
+
+                if (!resposta.ok) {
+
+
+                    throw new Error(
+                        dados.message
+                    );
+
+
+                }
+
+
+
+                setNome(
+                    dados.nome
+                );
+
+
+                setIdade(
+                    String(
+                        dados.idade
+                    )
+                );
+
+
+                setSerie(
+                    dados.serie
+                );
+
+
+                setRa(
+                    dados.ra
+                );
+
+
+
+            } catch (error) {
+
+
+                console.error(
+
+                    'Erro ao carregar aluno:',
+
+                    error
+
+                );
+
+
+                alert(
+
+                    error.message ||
+
+                    'Não foi possível carregar o aluno.'
+
+                );
+
+
+                router.push(
+                    '/listalunos'
+                );
+
+
+            } finally {
+
+
+                setCarregando(false);
+
+
+            }
+
+
+        }
+
+
+
+        if (id) {
+
+
+            carregarAluno();
+
+
+        }
+
+
+    }, [id, router]);
+
+
+
+    /* =====================================================
+       SALVAR ALTERAÇÕES
+    ===================================================== */
+
+    async function editarAluno(e) {
+
 
         e.preventDefault();
 
 
         try {
 
+
             setSalvando(true);
 
 
-            const resposta = await fetch(
 
-                '/api/alunos',
+            const resposta =
+                await fetch(
 
-                {
+                    '/api/alunos',
 
-                    method: 'POST',
+                    {
 
-
-                    headers: {
-
-                        'Content-Type':
-                            'application/json'
-
-                    },
+                        method:
+                            'PUT',
 
 
-                    body: JSON.stringify({
+                        headers: {
 
-                        nome,
+                            'Content-Type':
+                                'application/json'
 
-                        idade:
-                            Number(idade),
+                        },
 
-                        serie,
 
-                        ra
+                        body:
+                            JSON.stringify({
 
-                    })
+                                id_aluno:
+                                    Number(id),
 
-                }
+                                nome,
 
-            );
+                                idade:
+                                    Number(idade),
+
+                                serie,
+
+                                ra
+
+                            })
+
+                    }
+
+                );
+
 
 
             const dados =
@@ -88,27 +262,19 @@ export default function CadAlunos() {
 
             if (!resposta.ok) {
 
+
                 throw new Error(
                     dados.message
                 );
+
 
             }
 
 
 
             alert(
-                'Aluno cadastrado com sucesso!'
+                'Aluno editado com sucesso!'
             );
-
-
-
-            setNome('');
-
-            setIdade('');
-
-            setSerie('');
-
-            setRa('');
 
 
 
@@ -117,11 +283,16 @@ export default function CadAlunos() {
             );
 
 
+            router.refresh();
+
+
+
         } catch (error) {
+
 
             console.error(
 
-                'Erro ao cadastrar aluno:',
+                'Erro ao editar aluno:',
 
                 error
 
@@ -132,20 +303,74 @@ export default function CadAlunos() {
 
                 error.message ||
 
-                'Não foi possível cadastrar o aluno.'
+                'Não foi possível editar o aluno.'
 
             );
 
 
         } finally {
 
+
             setSalvando(false);
 
+
         }
+
 
     }
 
 
+
+    /* =====================================================
+       TELA DE CARREGAMENTO
+    ===================================================== */
+
+    if (carregando) {
+
+
+        return (
+
+            <>
+
+                <Header />
+
+
+                <main className="cadAlunoPage">
+
+
+                    <section className="cadAlunoSection">
+
+
+                        <div className="container">
+
+
+                            <p>
+
+                                Carregando aluno...
+
+                            </p>
+
+
+                        </div>
+
+
+                    </section>
+
+
+                </main>
+
+            </>
+
+        );
+
+
+    }
+
+
+
+    /* =====================================================
+       PÁGINA
+    ===================================================== */
 
     return (
 
@@ -178,10 +403,10 @@ export default function CadAlunos() {
 
                             <h1>
 
-                                Cadastro de
+                                Editar
 
                                 <span>
-                                    {' '}alunos.
+                                    {' '}aluno.
                                 </span>
 
                             </h1>
@@ -189,8 +414,9 @@ export default function CadAlunos() {
 
                             <p>
 
-                                Preencha os dados do estudante
-                                para adicioná-lo ao sistema escolar.
+                                Altere os dados do estudante
+                                e salve as novas informações
+                                no sistema escolar.
 
                             </p>
 
@@ -200,7 +426,9 @@ export default function CadAlunos() {
 
 
                                 <span>
-                                    01
+
+                                    02
+
                                 </span>
 
 
@@ -209,15 +437,15 @@ export default function CadAlunos() {
 
                                     <strong>
 
-                                        Novo estudante
+                                        Atualizar estudante
 
                                     </strong>
 
 
                                     <p>
 
-                                        Informe os dados solicitados
-                                        no formulário.
+                                        Confira os dados cadastrados
+                                        antes de salvar as alterações.
 
                                     </p>
 
@@ -245,7 +473,7 @@ export default function CadAlunos() {
 
                                     <span>
 
-                                        CADASTRO
+                                        EDIÇÃO
 
                                     </span>
 
@@ -260,9 +488,10 @@ export default function CadAlunos() {
                                 </div>
 
 
+
                                 <span className="formNumber">
 
-                                    01
+                                    ID {id}
 
                                 </span>
 
@@ -275,7 +504,7 @@ export default function CadAlunos() {
 
                                 className="cadAlunoForm"
 
-                                onSubmit={salvarAluno}
+                                onSubmit={editarAluno}
 
                             >
 
@@ -304,9 +533,11 @@ export default function CadAlunos() {
                                         value={nome}
 
                                         onChange={(e) =>
+
                                             setNome(
                                                 e.target.value
                                             )
+
                                         }
 
                                         required
@@ -336,16 +567,18 @@ export default function CadAlunos() {
 
                                         type="number"
 
-                                        placeholder="Ex: 16"
-
                                         min="1"
+
+                                        placeholder="Ex: 16"
 
                                         value={idade}
 
                                         onChange={(e) =>
+
                                             setIdade(
                                                 e.target.value
                                             )
+
                                         }
 
                                         required
@@ -380,9 +613,11 @@ export default function CadAlunos() {
                                         value={serie}
 
                                         onChange={(e) =>
+
                                             setSerie(
                                                 e.target.value
                                             )
+
                                         }
 
                                         required
@@ -417,9 +652,11 @@ export default function CadAlunos() {
                                         value={ra}
 
                                         onChange={(e) =>
+
                                             setRa(
                                                 e.target.value
                                             )
+
                                         }
 
                                         required
@@ -431,7 +668,7 @@ export default function CadAlunos() {
 
 
 
-                                {/* BOTÃO */}
+                                {/* BOTÕES */}
 
                                 <div className="formActions">
 
@@ -454,11 +691,13 @@ export default function CadAlunos() {
 
 
                                         {
+
                                             salvando
 
                                                 ? 'Salvando...'
 
-                                                : 'Salvar aluno'
+                                                : 'Salvar alterações'
+
                                         }
 
 
