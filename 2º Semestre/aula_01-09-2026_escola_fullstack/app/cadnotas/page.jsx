@@ -1,28 +1,109 @@
+
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Header from '../components/header';
 
 export default function CadNotas() {
 
-    const [nomeAluno, setNomeAluno] = useState('');
+    const [alunos, setAlunos] = useState([]);
+    const [alunoId, setAlunoId] = useState('');
+
     const [t1, setT1] = useState('');
     const [t2, setT2] = useState('');
     const [n1, setN1] = useState('');
     const [n2, setN2] = useState('');
     const [n3, setN3] = useState('');
 
-    function salvarNota(e) {
+    const [carregando, setCarregando] = useState(true);
+    const [salvando, setSalvando] = useState(false);
+    const [mensagem, setMensagem] = useState('');
+    const [erro, setErro] = useState('');
+
+    useEffect(() => {
+
+        async function carregarAlunos() {
+            try {
+                const resposta = await fetch('/api/alunos', {
+                    cache: 'no-store'
+                });
+
+                if (!resposta.ok) {
+                    throw new Error('Erro ao carregar alunos.');
+                }
+
+                const dados = await resposta.json();
+                setAlunos(dados);
+
+            } catch (error) {
+                setErro(error.message);
+            } finally {
+                setCarregando(false);
+            }
+        }
+
+        carregarAlunos();
+
+    }, []);
+
+    async function salvarNota(e) {
         e.preventDefault();
 
-        console.log({
-            nomeAluno,
-            t1,
-            t2,
-            n1,
-            n2,
-            n3
-        });
+        setMensagem('');
+        setErro('');
+
+        const campos = [t1, t2, n1, n2, n3];
+        const notas = campos.map(Number);
+
+        if (
+            !alunoId ||
+            campos.some(valor => valor.trim() === '') ||
+            notas.some(nota =>
+                !Number.isFinite(nota) ||
+                nota < 0 ||
+                nota > 10
+            )
+        ) {
+            setErro('Selecione um aluno e informe notas de 0 a 10.');
+            return;
+        }
+
+        setSalvando(true);
+
+        try {
+            const resposta = await fetch('/api/notas', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    aluno_id: Number(alunoId),
+                    t1: notas[0],
+                    t2: notas[1],
+                    n1: notas[2],
+                    n2: notas[3],
+                    n3: notas[4]
+                })
+            });
+
+            if (!resposta.ok) {
+                throw new Error('Não foi possível salvar as notas.');
+            }
+
+            setMensagem('Notas cadastradas com sucesso!');
+
+            setAlunoId('');
+            setT1('');
+            setT2('');
+            setN1('');
+            setN2('');
+            setN3('');
+
+        } catch (error) {
+            setErro(error.message);
+        } finally {
+            setSalvando(false);
+        }
     }
 
     return (
@@ -59,7 +140,8 @@ export default function CadNotas() {
                                     <strong>Novo registro</strong>
 
                                     <p>
-                                        Informe o aluno e todas as notas
+                                        Selecione um aluno cadastrado
+                                        e informe todas as notas
                                         solicitadas no formulário.
                                     </p>
                                 </div>
@@ -67,7 +149,6 @@ export default function CadNotas() {
                             </div>
 
                         </div>
-
 
                         {/* LADO DIREITO */}
                         <div className="cadAlunoFormArea">
@@ -85,32 +166,61 @@ export default function CadNotas() {
 
                             </div>
 
-
                             <form
                                 className="cadAlunoForm"
                                 onSubmit={salvarNota}
                             >
 
-                                {/* NOME DO ALUNO */}
+                                {/* SELECIONAR ALUNO */}
                                 <div className="formGroup formGroupFull">
 
-                                    <label htmlFor="nomeAluno">
-                                        Nome aluno
+                                    <label htmlFor="alunoId">
+                                        Nome do aluno
                                     </label>
 
-                                    <input
-                                        id="nomeAluno"
-                                        type="text"
-                                        placeholder="Digite o nome do aluno"
-                                        value={nomeAluno}
+                                    <select
+                                        id="alunoId"
+                                        value={alunoId}
                                         onChange={(e) =>
-                                            setNomeAluno(e.target.value)
+                                            setAlunoId(e.target.value)
                                         }
+                                        disabled={carregando}
                                         required
-                                    />
+                                        style={{
+                                            width: '100%',
+                                            padding: '14px 16px',
+                                            borderRadius: '8px',
+                                            border: '1px solid #ccc',
+                                            backgroundColor: 'transparent',
+                                            color: 'inherit',
+                                            font: 'inherit'
+                                        }}
+                                    >
+                                        <option value="">
+                                            {carregando
+                                                ? 'Carregando alunos...'
+                                                : 'Selecione um aluno'}
+                                        </option>
+
+                                        {alunos.map((aluno) => (
+                                            <option
+                                                key={aluno.id_aluno}
+                                                value={aluno.id_aluno}
+                                                style={{ color: '#111' }}
+                                            >
+                                                {aluno.nome} — RA: {aluno.ra}
+                                            </option>
+                                        ))}
+                                    </select>
+
+                                    {!carregando && alunos.length === 0 && (
+                                        <p>
+                                            Nenhum aluno cadastrado.
+                                            Cadastre um aluno primeiro.
+                                        </p>
+                                    )}
 
                                 </div>
-
 
                                 {/* TRABALHO 1 */}
                                 <div className="formGroup">
@@ -135,7 +245,6 @@ export default function CadNotas() {
 
                                 </div>
 
-
                                 {/* TRABALHO 2 */}
                                 <div className="formGroup">
 
@@ -158,7 +267,6 @@ export default function CadNotas() {
                                     />
 
                                 </div>
-
 
                                 {/* NOTA 1 */}
                                 <div className="formGroup">
@@ -183,7 +291,6 @@ export default function CadNotas() {
 
                                 </div>
 
-
                                 {/* NOTA 2 */}
                                 <div className="formGroup">
 
@@ -206,7 +313,6 @@ export default function CadNotas() {
                                     />
 
                                 </div>
-
 
                                 {/* NOTA 3 */}
                                 <div className="formGroup formGroupFull">
@@ -231,16 +337,36 @@ export default function CadNotas() {
 
                                 </div>
 
-
-                                {/* BOTÃO */}
+                                {/* MENSAGENS E BOTÃO */}
                                 <div className="formActions">
 
-                                    <span>
-                                        Verifique as notas antes de salvar.
+                                    <span
+                                        role={erro ? 'alert' : 'status'}
+                                        style={{
+                                            color: erro
+                                                ? '#dc2626'
+                                                : mensagem
+                                                    ? '#16a34a'
+                                                    : 'inherit'
+                                        }}
+                                    >
+                                        {erro ||
+                                            mensagem ||
+                                            'Verifique as notas antes de salvar.'}
                                     </span>
 
-                                    <button type="submit">
-                                        Salvar notas
+                                    <button
+                                        type="submit"
+                                        disabled={
+                                            salvando ||
+                                            carregando ||
+                                            alunos.length === 0
+                                        }
+                                    >
+                                        {salvando
+                                            ? 'Salvando...'
+                                            : 'Salvar notas'}
+
                                         <span>→</span>
                                     </button>
 

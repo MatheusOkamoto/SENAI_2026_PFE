@@ -1,26 +1,171 @@
+
 'use client';
 
+import { useCallback, useEffect, useState } from 'react';
 import Header from '../components/header';
+
+const camposNotas = ['t1', 't2', 'n1', 'n2', 'n3'];
 
 export default function ListNotas() {
 
-    const registro = {
-        nomeAluno: 'Ana Luíza',
-        t1: 8.5,
-        t2: 9.0,
-        n1: 7.5,
-        n2: 8.0,
-        n3: 9.5
-    };
+    const [registros, setRegistros] = useState([]);
+    const [carregando, setCarregando] = useState(true);
+    const [erro, setErro] = useState('');
 
-    const media =
-        (
-            registro.t1 +
-            registro.t2 +
-            registro.n1 +
-            registro.n2 +
-            registro.n3
-        ) / 5;
+    const [editandoId, setEditandoId] = useState(null);
+    const [valoresEdicao, setValoresEdicao] = useState({});
+    const [processando, setProcessando] = useState(false);
+
+    const carregarNotas = useCallback(async () => {
+        try {
+            setErro('');
+
+            const resposta = await fetch('/api/notas', {
+                cache: 'no-store'
+            });
+
+            if (!resposta.ok) {
+                throw new Error('Não foi possível carregar as notas.');
+            }
+
+            const dados = await resposta.json();
+            setRegistros(dados);
+
+        } catch (error) {
+            setErro(error.message);
+        } finally {
+            setCarregando(false);
+        }
+    }, []);
+
+    useEffect(() => {
+        carregarNotas();
+    }, [carregarNotas]);
+
+    function calcularMedia(registro) {
+
+        const soma = camposNotas.reduce(
+            (total, campo) =>
+                total + Number(registro[campo]),
+            0
+        );
+
+        return (soma / camposNotas.length).toFixed(1);
+    }
+
+    function iniciarEdicao(registro) {
+
+        setEditandoId(registro.id_notas);
+
+        setValoresEdicao({
+            t1: String(registro.t1),
+            t2: String(registro.t2),
+            n1: String(registro.n1),
+            n2: String(registro.n2),
+            n3: String(registro.n3)
+        });
+
+        setErro('');
+    }
+
+    function cancelarEdicao() {
+        setEditandoId(null);
+        setValoresEdicao({});
+        setErro('');
+    }
+
+    async function salvarEdicao(registro) {
+
+        const valores = camposNotas.map(
+            campo => valoresEdicao[campo]
+        );
+
+        const notas = valores.map(Number);
+
+        if (
+            valores.some(valor => valor.trim() === '') ||
+            notas.some(nota =>
+                !Number.isFinite(nota) ||
+                nota < 0 ||
+                nota > 10
+            )
+        ) {
+            setErro('Informe notas válidas entre 0 e 10.');
+            return;
+        }
+
+        setProcessando(true);
+        setErro('');
+
+        try {
+            const resposta = await fetch('/api/notas', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id_notas: registro.id_notas,
+                    aluno_id: registro.aluno_id,
+                    t1: notas[0],
+                    t2: notas[1],
+                    n1: notas[2],
+                    n2: notas[3],
+                    n3: notas[4]
+                })
+            });
+
+            if (!resposta.ok) {
+                throw new Error('Não foi possível editar as notas.');
+            }
+
+            cancelarEdicao();
+            await carregarNotas();
+
+        } catch (error) {
+            setErro(error.message);
+        } finally {
+            setProcessando(false);
+        }
+    }
+
+    async function excluirNotas(registro) {
+
+        const confirmar = window.confirm(
+            `Deseja realmente excluir as notas de ${registro.nome}?`
+        );
+
+        if (!confirmar) return;
+
+        setProcessando(true);
+        setErro('');
+
+        try {
+            const resposta = await fetch('/api/notas', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id_notas: registro.id_notas
+                })
+            });
+
+            if (!resposta.ok) {
+                throw new Error('Não foi possível excluir as notas.');
+            }
+
+            if (editandoId === registro.id_notas) {
+                cancelarEdicao();
+            }
+
+            await carregarNotas();
+
+        } catch (error) {
+            setErro(error.message);
+        } finally {
+            setProcessando(false);
+        }
+    }
 
     return (
         <>
@@ -53,7 +198,6 @@ export default function ListNotas() {
 
                         </div>
 
-
                         {/* TABELA */}
                         <div className="tabelaArea">
 
@@ -65,11 +209,26 @@ export default function ListNotas() {
                                 </div>
 
                                 <span className="tabelaQuantidade">
-                                    01 REGISTRO
+                                    {String(registros.length).padStart(2, '0')}
+                                    {' '}
+                                    {registros.length === 1
+                                        ? 'REGISTRO'
+                                        : 'REGISTROS'}
                                 </span>
 
                             </div>
 
+                            {erro && (
+                                <p
+                                    role="alert"
+                                    style={{
+                                        color: '#dc2626',
+                                        padding: '16px'
+                                    }}
+                                >
+                                    {erro}
+                                </p>
+                            )}
 
                             <div className="tabelaResponsiva">
 
@@ -90,63 +249,157 @@ export default function ListNotas() {
 
                                     <tbody>
 
-                                        <tr>
+                                        {carregando ? (
 
-                                            <td>
-                                                <strong>
-                                                    {registro.nomeAluno}
-                                                </strong>
-                                            </td>
+                                            <tr>
+                                                <td colSpan={8}>
+                                                    Carregando notas...
+                                                </td>
+                                            </tr>
 
-                                            <td>
-                                                {registro.t1.toFixed(1)}
-                                            </td>
+                                        ) : registros.length === 0 ? (
 
-                                            <td>
-                                                {registro.t2.toFixed(1)}
-                                            </td>
+                                            <tr>
+                                                <td colSpan={8}>
+                                                    Nenhuma nota cadastrada.
+                                                </td>
+                                            </tr>
 
-                                            <td>
-                                                {registro.n1.toFixed(1)}
-                                            </td>
+                                        ) : (
 
-                                            <td>
-                                                {registro.n2.toFixed(1)}
-                                            </td>
+                                            registros.map((registro) => {
 
-                                            <td>
-                                                {registro.n3.toFixed(1)}
-                                            </td>
+                                                const editando =
+                                                    editandoId === registro.id_notas;
 
-                                            <td>
-                                                <strong className="mediaNota">
-                                                    {media.toFixed(1)}
-                                                </strong>
-                                            </td>
+                                                return (
+                                                    <tr key={registro.id_notas}>
 
-                                            <td>
+                                                        <td>
+                                                            <strong>
+                                                                {registro.nome}
+                                                            </strong>
+                                                        </td>
 
-                                                <div className="acoesTabela">
+                                                        {camposNotas.map((campo) => (
 
-                                                    <button
-                                                        className="botaoEditar"
-                                                        type="button"
-                                                    >
-                                                        Editar
-                                                    </button>
+                                                            <td key={campo}>
 
-                                                    <button
-                                                        className="botaoExcluir"
-                                                        type="button"
-                                                    >
-                                                        Excluir
-                                                    </button>
+                                                                {editando ? (
 
-                                                </div>
+                                                                    <input
+                                                                        type="number"
+                                                                        min="0"
+                                                                        max="10"
+                                                                        step="0.1"
+                                                                        value={
+                                                                            valoresEdicao[campo]
+                                                                        }
+                                                                        onChange={(e) =>
+                                                                            setValoresEdicao(
+                                                                                anterior => ({
+                                                                                    ...anterior,
+                                                                                    [campo]: e.target.value
+                                                                                })
+                                                                            )
+                                                                        }
+                                                                        aria-label={`Editar ${campo}`}
+                                                                        style={{
+                                                                            width: '75px',
+                                                                            padding: '8px',
+                                                                            borderRadius: '6px',
+                                                                            border: '1px solid #ccc',
+                                                                            font: 'inherit'
+                                                                        }}
+                                                                    />
 
-                                            </td>
+                                                                ) : (
 
-                                        </tr>
+                                                                    Number(
+                                                                        registro[campo]
+                                                                    ).toFixed(1)
+
+                                                                )}
+
+                                                            </td>
+
+                                                        ))}
+
+                                                        <td>
+                                                            <strong className="mediaNota">
+                                                                {editando
+                                                                    ? '—'
+                                                                    : calcularMedia(registro)}
+                                                            </strong>
+                                                        </td>
+
+                                                        <td>
+
+                                                            <div className="acoesTabela">
+
+                                                                {editando ? (
+
+                                                                    <>
+                                                                        <button
+                                                                            className="botaoEditar"
+                                                                            type="button"
+                                                                            disabled={processando}
+                                                                            onClick={() =>
+                                                                                salvarEdicao(registro)
+                                                                            }
+                                                                        >
+                                                                            {processando
+                                                                                ? 'Salvando...'
+                                                                                : 'Salvar'}
+                                                                        </button>
+
+                                                                        <button
+                                                                            className="botaoExcluir"
+                                                                            type="button"
+                                                                            disabled={processando}
+                                                                            onClick={cancelarEdicao}
+                                                                        >
+                                                                            Cancelar
+                                                                        </button>
+                                                                    </>
+
+                                                                ) : (
+
+                                                                    <>
+                                                                        <button
+                                                                            className="botaoEditar"
+                                                                            type="button"
+                                                                            disabled={processando}
+                                                                            onClick={() =>
+                                                                                iniciarEdicao(registro)
+                                                                            }
+                                                                        >
+                                                                            Editar
+                                                                        </button>
+
+                                                                        <button
+                                                                            className="botaoExcluir"
+                                                                            type="button"
+                                                                            disabled={processando}
+                                                                            onClick={() =>
+                                                                                excluirNotas(registro)
+                                                                            }
+                                                                        >
+                                                                            Excluir
+                                                                        </button>
+                                                                    </>
+
+                                                                )}
+
+                                                            </div>
+
+                                                        </td>
+
+                                                    </tr>
+                                                );
+                                            })
+
+                                        )}
 
                                     </tbody>
 

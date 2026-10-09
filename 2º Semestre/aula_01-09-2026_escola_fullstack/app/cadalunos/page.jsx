@@ -7,6 +7,8 @@ import { useRouter } from 'next/navigation';
 
 import Header from '../components/header';
 
+import { redirect } from 'next/navigation';
+
 
 
 export default function CadAlunos() {
@@ -87,7 +89,7 @@ export default function CadAlunos() {
 
 
             if (!resposta.ok) {
-
+                redirect('/listalunos');
                 throw new Error(
                     dados.message
                 );
