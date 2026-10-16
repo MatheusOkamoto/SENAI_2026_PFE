@@ -1,601 +1,104 @@
 'use client';
+import { useState, useEffect } from "react";
+import Header from "../components/header";
+import styles from './listalunos.module.css';
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
-
-import {
-
-    useEffect,
-
-    useState
-
-} from 'react';
-
-
-import {
-
-    useRouter
-
-} from 'next/navigation';
-
-
-import Header from '../components/header';
-
-
-
-export default function ListAlunos() {
-
-
+export default function ListAluno() {
+    const [alunos, setAlunos] = useState([]);
     const router = useRouter();
 
-
-    const [alunos, setAlunos] =
-        useState([]);
-
-
-    const [carregando, setCarregando] =
-        useState(true);
-
-
-
-    async function carregarAlunos() {
-
-
-        try {
-
-
-            const resposta =
-                await fetch(
-
-                    '/api/alunos',
-
-                    {
-
-                        cache: 'no-store'
-
-                    }
-
-                );
-
-
-
-            if (!resposta.ok) {
-
-                throw new Error(
-                    'Erro ao carregar alunos.'
-                );
-
-            }
-
-
-
-            const dados =
-                await resposta.json();
-
-
-
-            setAlunos(dados);
-
-
-
-        } catch (error) {
-
-
-            console.error(
-
-                'Erro ao carregar alunos:',
-
-                error
-
-            );
-
-
-            alert(
-
-                'Não foi possível carregar os alunos.'
-
-            );
-
-
-        } finally {
-
-
-            setCarregando(false);
-
-
-        }
-
-
-    }
-
-
-
     useEffect(() => {
+        buscarAlunos()
+    }, [])//toda vez que a tela for recarregada
 
+    async function buscarAlunos() {
+        const resposta = await fetch('/api/alunos');
+        const dados = await resposta.json();
 
-        carregarAlunos();
-
-
-    }, []);
-
-
-
-    function editarAluno(id) {
-
-
-        router.push(
-
-            `/editalunos/${id}`
-
-        );
-
-
+        setAlunos(dados);
     }
 
-
-
-    async function excluirAluno(id) {
-
-
-        const confirmar = confirm(
-
-            'Deseja realmente excluir este aluno?'
-
-        );
-
-
-        if (!confirmar) {
-
-            return;
-
-        }
-
-
-
-        try {
-
-
-            const resposta =
-                await fetch(
-
-                    '/api/alunos',
-
-                    {
-
-                        method:
-                            'DELETE',
-
-
-                        headers: {
-
-                            'Content-Type':
-                                'application/json'
-
-                        },
-
-
-                        body:
-                            JSON.stringify({
-
-                                id_aluno:
-                                    id
-
-                            })
-
-                    }
-
-                );
-
-
-
-            const dados =
-                await resposta.json();
-
-
-
-            if (!resposta.ok) {
-
-                throw new Error(
-                    dados.message
-                );
-
-            }
-
-
-
-            alert(
-                'Aluno excluído com sucesso!'
-            );
-
-
-            carregarAlunos();
-
-
-
-        } catch (error) {
-
-
-            console.error(
-
-                'Erro ao excluir aluno:',
-
-                error
-
-            );
-
-
-            alert(
-
-                error.message ||
-
-                'Não foi possível excluir o aluno.'
-
-            );
-
-
-        }
-
-
+    function editarAlunos(id){
+        router.push(`/editalunos/${id}`)
     }
 
+    async function excluiraAluno(event){
+        event.preventDefault();
+        if(!confirm('Deseja realmente excluir este aluno?'))return;
+        const resposta = await fetch("/api/alunos",{
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                id_aluno: event.target.dataset.id
+            })
+        })
+        const dados = await resposta.json();
+        alert(dados.mensagem || dados.erro)
+       buscarAlunos();
+    }
 
 
     return (
-
         <>
-
             <Header />
 
-
-            <main className="listaPage">
-
-
-                <section className="listaSection">
-
-
-                    <div className="container">
-
-
-
-                        {/* CABEÇALHO */}
-
-                        <div className="listaHeader">
-
-
-                            <div>
-
-
-                                <span className="sectionLabel">
-
-                                    ALUNOS
-
-                                </span>
-
-
-                                <h1>
-
-                                    Lista de
-
-                                    <span>
-                                        {' '}alunos.
-                                    </span>
-
-                                </h1>
-
-
-                                <p>
-
-                                    Consulte os estudantes
-                                    cadastrados no sistema escolar.
-
-                                </p>
-
-
-                            </div>
-
-
-                        </div>
-
-
-
-                        {/* TABELA */}
-
-                        <div className="tabelaArea">
-
-
-                            <div className="tabelaHeader">
-
-
-                                <div>
-
-
-                                    <span>
-
-                                        REGISTROS
-
-                                    </span>
-
-
-                                    <h2>
-
-                                        Alunos cadastrados
-
-                                    </h2>
-
-
-                                </div>
-
-
-
-                                <span className="tabelaQuantidade">
-
-
-                                    {alunos.length}
-
-
-                                    {
-                                        alunos.length === 1
-
-                                            ? ' REGISTRO'
-
-                                            : ' REGISTROS'
-                                    }
-
-
-                                </span>
-
-
-                            </div>
-
-
-
-                            <div className="tabelaResponsiva">
-
-
-                                <table className="tabelaSistema">
-
-
-                                    <thead>
-
-
-                                        <tr>
-
-
-                                            <th>
-                                                ID
-                                            </th>
-
-
-                                            <th>
-                                                Nome
-                                            </th>
-
-
-                                            <th>
-                                                Idade
-                                            </th>
-
-
-                                            <th>
-                                                Série
-                                            </th>
-
-
-                                            <th>
-                                                RA
-                                            </th>
-
-
-                                            <th>
-                                                Ações
-                                            </th>
-
-
-                                        </tr>
-
-
-                                    </thead>
-
-
-
-                                    <tbody>
-
-
-                                        {
-                                            carregando
-                                                ? (
-
-                                                    <tr>
-
-
-                                                        <td colSpan="6">
-
-                                                            Carregando...
-
-                                                        </td>
-
-
-                                                    </tr>
-
-                                                )
-
-                                                : alunos.length === 0
-                                                    ? (
-
-                                                        <tr>
-
-
-                                                            <td colSpan="6">
-
-                                                                Nenhum aluno cadastrado.
-
-                                                            </td>
-
-
-                                                        </tr>
-
-                                                    )
-
-                                                    : (
-
-                                                        alunos.map(
-
-                                                            (aluno) => (
-
-                                                                <tr
-
-                                                                    key={
-                                                                        aluno.id_aluno
-                                                                    }
-
-                                                                >
-
-
-                                                                    <td>
-
-                                                                        {
-                                                                            aluno.id_aluno
-                                                                        }
-
-                                                                    </td>
-
-
-
-                                                                    <td>
-
-
-                                                                        <strong>
-
-                                                                            {
-                                                                                aluno.nome
-                                                                            }
-
-                                                                        </strong>
-
-
-                                                                    </td>
-
-
-
-                                                                    <td>
-
-                                                                        {
-                                                                            aluno.idade
-                                                                        }
-
-                                                                    </td>
-
-
-
-                                                                    <td>
-
-                                                                        {
-                                                                            aluno.serie
-                                                                        }
-
-                                                                    </td>
-
-
-
-                                                                    <td>
-
-                                                                        {
-                                                                            aluno.ra
-                                                                        }
-
-                                                                    </td>
-
-
-
-                                                                    <td>
-
-
-                                                                        <div className="acoesTabela">
-
-
-                                                                            <button
-
-                                                                                className="botaoEditar"
-
-                                                                                type="button"
-
-                                                                                onClick={() =>
-
-                                                                                    editarAluno(
-
-                                                                                        aluno.id_aluno
-
-                                                                                    )
-
-                                                                                }
-
-                                                                            >
-
-                                                                                Editar
-
-                                                                            </button>
-
-
-
-                                                                            <button
-
-                                                                                className="botaoExcluir"
-
-                                                                                type="button"
-
-                                                                                onClick={() =>
-
-                                                                                    excluirAluno(
-
-                                                                                        aluno.id_aluno
-
-                                                                                    )
-
-                                                                                }
-
-                                                                            >
-
-                                                                                Excluir
-
-                                                                            </button>
-
-
-                                                                        </div>
-
-
-                                                                    </td>
-
-
-                                                                </tr>
-
-                                                            )
-
-                                                        )
-
-                                                    )
-                                        }
-
-
-                                    </tbody>
-
-
-                                </table>
-
-
-                            </div>
-
-
-                        </div>
-
-
-                    </div>
-
+            <main className={styles.main}>
+
+                <section className={styles.tituloArea}>
+                    <h2>Lista de Alunos</h2>
+
+                    <p>
+                        Consulte todos os alunos cadastrados no sistema.
+                    </p>
+                </section>
+
+                <section className={styles.tabelaContainer}>
+
+                    <table className={styles.tabela}>
+
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Idade</th>
+                                <th>Série</th>
+                                <th>RA</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {alunos.map((aluno) => (
+                                <tr key={aluno.id_aluno}>
+                                    <td>{aluno.id_aluno}</td>
+                                    <td>{aluno.nome}</td>
+                                    <td>{aluno.idade}</td>
+                                    <td>{aluno.serie}</td>
+                                    <td>{aluno.ra}</td>
+
+                                    <td>
+                                        <button className={styles.botaoEditar} onClick={() => editarAlunos(aluno.id_aluno)}>
+                                            Editar
+                                        </button>
+
+                                        <button className={styles.botaoExcluir} onClick={(e) => excluiraAluno(e)} data-id={aluno.id_aluno}>
+                                            Excluir
+                                        </button>
+                                    </td>
+
+                                </tr>
+                            ))}
+                        </tbody>
+
+                    </table>
 
                 </section>
 
-
             </main>
-
         </>
-
     );
-
 }

@@ -1904,3 +1904,138 @@ a {
 
     border: 1px solid #f2c5c8;
 }
+
+
+/* =========================================================
+   SISTEMA ESCOLAR
+   ESTILIZAÇÃO DO MÓDULO DE NOTAS
+========================================================= */
+
+
+/* =========================================================
+   SELEÇÃO DE ALUNOS
+========================================================= */
+
+.formGroup select {
+    width: 100%;
+    height: 53px;
+
+    padding: 0 15px;
+
+    background: #fafafa;
+
+    border: 1px solid #dddddd;
+    border-radius: 0;
+    outline: none;
+
+    color: #202020;
+
+    font-family: inherit;
+    font-size: 14px;
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.formGroup select:hover {
+    border-color: #bfbfbf;
+}
+
+.formGroup select:focus {
+    background: #ffffff;
+
+    border-color: #e30613;
+
+    box-shadow: 0 0 0 3px rgba(227, 6, 19, 0.07);
+}
+
+.formGroup select:disabled {
+    background: #f2f2f2;
+    color: #999999;
+    cursor: not-allowed;
+}
+
+.formGroup select option {
+    background: #ffffff;
+    color: #202020;
+}
+
+
+/* =========================================================
+   EDIÇÃO DE NOTAS NA TABELA
+========================================================= */
+
+.tabelaSistema td input[type="number"] {
+    width: 75px;
+    height: 38px;
+
+    padding: 0 10px;
+
+    background: #fafafa;
+
+    border: 1px solid #dddddd;
+    border-radius: 0;
+    outline: none;
+
+    color: #202020;
+
+    font-family: inherit;
+    font-size: 13px;
+
+    text-align: center;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.tabelaSistema td input[type="number"]:hover {
+    border-color: #bfbfbf;
+}
+
+.tabelaSistema td input[type="number"]:focus {
+    background: #ffffff;
+
+    border-color: #e30613;
+
+    box-shadow: 0 0 0 3px rgba(227, 6, 19, 0.07);
+}
+
+
+/* =========================================================
+   BOTÕES DESABILITADOS
+========================================================= */
+
+.formActions button:disabled,
+.acoesTabela button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .formGroup select {
+        font-size: 14px;
+    }
+
+    .tabelaSistema td input[type="number"] {
+        width: 65px;
+        height: 36px;
+        padding: 0 6px;
+    }
+
+    .acoesTabela {
+        gap: 6px;
+    }
+
+}

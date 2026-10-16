@@ -1,74 +1,47 @@
 import Link from "next/link";
+import styles from "./header.module.css";
 
 export default function Header() {
     return (
         <>
-            <div className="topBar">
-                <div className="container topBarContent">
-                    <span>SESI-SP</span>
-                    <span>Sistema Escolar</span>
-                </div>
-            </div>
+            <header className={styles.header}>
+                <h1 className={styles.logo}>
+                    Sistema Escolar - SESI
+                </h1>
 
-            <header className="header">
-                <div className="container headerContent">
+                <nav>
+                    <ul className={styles.menu}>
+                        <li>
+                            <Link href="/">
+                                Início
+                            </Link>
+                        </li>
 
-                    <Link href="/" className="brand">
-                        <div className="brandMark">
-                            SESI
-                        </div>
+                        <li>
+                            <Link href="/cadalunos">
+                                Cadastro - Alunos
+                            </Link>
+                        </li>
 
-                        <div className="brandInfo">
-                            <strong>Sistema Escolar</strong>
-                            <span>SESI Mirandópolis</span>
-                        </div>
-                    </Link>
+                        <li>
+                            <Link href="/listalunos">
+                                Lista - Alunos
+                            </Link>
+                        </li>
 
-                    <nav className="navigation">
-                        <ul>
-                            <li>
-                                <Link href="/">
-                                    Início
-                                </Link>
-                            </li>
+                        <li>
+                            <Link href="/cadnotas">
+                                Cadastro - Notas
+                            </Link>
+                        </li>
 
-                            <li className="navItemDropdown">
-                                <span className="navTitle">
-                                    Alunos
-                                    <span className="arrow">⌄</span>
-                                </span>
-
-                                <div className="dropdown">
-                                    <Link href="/cadalunos">
-                                        Cadastrar aluno
-                                    </Link>
-
-                                    <Link href="/listalunos">
-                                        Lista de alunos
-                                    </Link>
-                                </div>
-                            </li>
-
-                            <li className="navItemDropdown">
-                                <span className="navTitle">
-                                    Notas
-                                    <span className="arrow">⌄</span>
-                                </span>
-
-                                <div className="dropdown">
-                                    <Link href="/cadnotas">
-                                        Cadastrar nota
-                                    </Link>
-
-                                    <Link href="/listnotas">
-                                        Lista de notas
-                                    </Link>
-                                </div>
-                            </li>
-                        </ul>
-                    </nav>
-
-                </div>
+                        <li>
+                            <Link href="/listnotas">
+                                Lista - Notas
+                            </Link>
+                        </li>
+                    </ul>
+                </nav>
             </header>
         </>
     );

@@ -1,0 +1,199 @@
+
+.main {
+    min-height: calc(100vh - 82px);
+    padding: 80px 24px 110px;
+
+    background: #f6f6f6;
+    color: #202020;
+}
+
+.tituloArea {
+    max-width: 1180px;
+    margin: 0 auto 45px;
+}
+
+.tituloArea::before {
+    content: "NOTAS";
+
+    display: block;
+    margin-bottom: 18px;
+
+    color: #e30613;
+
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+}
+
+.tituloArea h2 {
+    margin-bottom: 18px;
+
+    color: #202020;
+
+    font-size: clamp(42px, 5vw, 62px);
+    font-weight: 750;
+    line-height: 1.02;
+    letter-spacing: -0.05em;
+}
+
+.tituloArea h2::after {
+    content: ".";
+    color: #e30613;
+}
+
+.tituloArea p {
+    max-width: 500px;
+
+    color: #696969;
+
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.tabelaContainer {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 35px;
+
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+
+    overflow-x: auto;
+
+    color-scheme: light;
+}
+
+.tabelaContainer::before {
+    content: "NOTAS CADASTRADAS";
+
+    display: block;
+
+    padding-bottom: 25px;
+    margin-bottom: 25px;
+
+    color: #202020;
+
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.tabela {
+    width: 100%;
+    min-width: 880px;
+
+    border-collapse: collapse;
+}
+
+.tabela thead {
+    background: #f6f6f6;
+}
+
+.tabela th {
+    padding: 15px 16px;
+
+    color: #555555;
+
+    font-size: 10px;
+    font-weight: 800;
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+
+    border-bottom: 1px solid #dddddd;
+}
+
+.tabela td {
+    padding: 19px 16px;
+
+    color: #555555;
+
+    font-size: 13px;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+.tabela td:nth-child(2) {
+    color: #202020;
+    font-weight: 700;
+}
+
+.tabela tbody tr {
+    transition: background 0.2s ease;
+}
+
+.tabela tbody tr:hover {
+    background: #fafafa;
+}
+
+.botaoEditar,
+.botaoExcluir {
+    min-height: 35px;
+    padding: 0 13px;
+    margin: 3px 5px 3px 0;
+
+    border-radius: 0;
+
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.botaoEditar {
+    background: #ffffff;
+    color: #333333;
+
+    border: 1px solid #cccccc;
+}
+
+.botaoEditar:hover:not(:disabled) {
+    background: #f2f2f2;
+    border-color: #aaaaaa;
+}
+
+.botaoExcluir {
+    background: #fff5f5;
+    color: #e30613;
+
+    border: 1px solid #f2c5c8;
+}
+
+.botaoExcluir:hover:not(:disabled) {
+    background: #e30613;
+    color: #ffffff;
+
+    border-color: #e30613;
+}
+
+.botaoEditar:disabled,
+.botaoExcluir:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+@media (max-width: 700px) {
+    .main {
+        padding: 60px 15px 75px;
+    }
+
+    .tituloArea h2 {
+        font-size: 43px;
+    }
+
+    .tabelaContainer {
+        padding: 25px 18px;
+    }
+
+    .tabelaContainer::before {
+        font-size: 21px;
+    }
+}
