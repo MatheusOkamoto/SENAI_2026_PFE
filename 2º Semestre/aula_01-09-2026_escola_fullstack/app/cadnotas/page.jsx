@@ -1,46 +1,78 @@
+
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Header from "../components/header";
 import styles from "./cadnotas.module.css";
 
 export default function CadNotas() {
-    const [id_aluno, setIdAluno] = useState('');
-    const [trabalho1, setTrabalho1] = useState('');
-    const [trabalho2, setTrabalho2] = useState('');
-    const [nota1, setNota1] = useState('');
-    const [nota2, setNota2] = useState('');
-    const [nota3, setNota3] = useState('');
+    const router = useRouter();
 
-    async function cadastraAluno(event) {
+    const [aluno_id, setAlunoId] = useState('');
+    const [t1, setT1] = useState('');
+    const [t2, setT2] = useState('');
+    const [n1, setN1] = useState('');
+    const [n2, setN2] = useState('');
+    const [n3, setN3] = useState('');
+    const [alunos, setAlunos] = useState([]);
+    const [salvando, setSalvando] = useState(false);
+
+    useEffect(() => {
+        buscarAlunos();
+    }, []);
+
+    async function buscarAlunos() {
+        try {
+            const resposta = await fetch("/api/alunos");
+
+            if (!resposta.ok) {
+                throw new Error("Erro ao buscar alunos.");
+            }
+
+            const dados = await resposta.json();
+            setAlunos(dados);
+
+        } catch (error) {
+            console.error("Erro ao buscar alunos", error);
+            alert("Não foi possível carregar os alunos.");
+        }
+    }
+
+    async function cadastraNotas(event) {
         event.preventDefault();
+        setSalvando(true);
 
-        const resposta = await fetch("/api/notas", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                aluno_id: id_aluno,
-                t1: trabalho1,
-                t2: trabalho2,
-                n1: nota1,
-                n2: nota2,
-                n3: nota3
-            })
-        });
+        try {
+            const resposta = await fetch("/api/notas", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    aluno_id,
+                    t1,
+                    t2,
+                    n1,
+                    n2,
+                    n3
+                })
+            });
 
-        const dados = await resposta.json();
+            const dados = await resposta.json();
 
-        alert(dados.mensagem || dados.erro);
+            alert(dados.mensagem || dados.erro);
 
-        if (resposta.ok) {
-            setIdAluno('');
-            setTrabalho1('');
-            setTrabalho2('');
-            setNota1('');
-            setNota2('');
-            setNota3('');
+            if (resposta.ok) {
+                router.push("/listnotas");
+            }
+
+        } catch (error) {
+            console.error("Erro ao cadastrar notas", error);
+            alert("Não foi possível salvar as notas.");
+
+        } finally {
+            setSalvando(false);
         }
     }
 
@@ -52,28 +84,41 @@ export default function CadNotas() {
                 <section className={styles.container}>
                     <div className={styles.painel}>
                         <p className={styles.status}>
-                            SISTEMA ONLINE
+                            SISTEMA ONLINE ● CADASTRO DE NOTAS
                         </p>
 
                         <h2>Cadastro de Notas</h2>
 
                         <form
                             className={styles.form}
-                            onSubmit={cadastraAluno}
+                            onSubmit={cadastraNotas}
                         >
                             <div className={styles.campo}>
-                                <label htmlFor="id_aluno">
-                                    ID do Aluno
+                                <label htmlFor="aluno_id">
+                                    Aluno
                                 </label>
 
-                                <input
-                                    id="id_aluno"
-                                    type="number"
-                                    min="1"
-                                    value={id_aluno}
-                                    onChange={(e) => setIdAluno(e.target.value)}
+                                <select
+                                    id="aluno_id"
+                                    value={aluno_id}
+                                    onChange={(event) =>
+                                        setAlunoId(event.target.value)
+                                    }
                                     required
-                                />
+                                >
+                                    <option value="">
+                                        Selecione um aluno
+                                    </option>
+
+                                    {alunos.map((aluno) => (
+                                        <option
+                                            key={aluno.id_aluno}
+                                            value={aluno.id_aluno}
+                                        >
+                                            {aluno.nome} - RA {aluno.ra}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
 
                             <div className={styles.campo}>
@@ -87,8 +132,10 @@ export default function CadNotas() {
                                     min="0"
                                     max="10"
                                     step="0.1"
-                                    value={trabalho1}
-                                    onChange={(e) => setTrabalho1(e.target.value)}
+                                    value={t1}
+                                    onChange={(e) =>
+                                        setT1(e.target.value)
+                                    }
                                     required
                                 />
                             </div>
@@ -104,8 +151,10 @@ export default function CadNotas() {
                                     min="0"
                                     max="10"
                                     step="0.1"
-                                    value={trabalho2}
-                                    onChange={(e) => setTrabalho2(e.target.value)}
+                                    value={t2}
+                                    onChange={(e) =>
+                                        setT2(e.target.value)
+                                    }
                                     required
                                 />
                             </div>
@@ -121,8 +170,10 @@ export default function CadNotas() {
                                     min="0"
                                     max="10"
                                     step="0.1"
-                                    value={nota1}
-                                    onChange={(e) => setNota1(e.target.value)}
+                                    value={n1}
+                                    onChange={(e) =>
+                                        setN1(e.target.value)
+                                    }
                                     required
                                 />
                             </div>
@@ -138,8 +189,10 @@ export default function CadNotas() {
                                     min="0"
                                     max="10"
                                     step="0.1"
-                                    value={nota2}
-                                    onChange={(e) => setNota2(e.target.value)}
+                                    value={n2}
+                                    onChange={(e) =>
+                                        setN2(e.target.value)
+                                    }
                                     required
                                 />
                             </div>
@@ -155,8 +208,10 @@ export default function CadNotas() {
                                     min="0"
                                     max="10"
                                     step="0.1"
-                                    value={nota3}
-                                    onChange={(e) => setNota3(e.target.value)}
+                                    value={n3}
+                                    onChange={(e) =>
+                                        setN3(e.target.value)
+                                    }
                                     required
                                 />
                             </div>
@@ -164,8 +219,9 @@ export default function CadNotas() {
                             <button
                                 type="submit"
                                 className={styles.botao}
+                                disabled={salvando}
                             >
-                                Salvar Nota
+                                {salvando ? "Salvando..." : "Salvar Nota"}
                             </button>
                         </form>
                     </div>

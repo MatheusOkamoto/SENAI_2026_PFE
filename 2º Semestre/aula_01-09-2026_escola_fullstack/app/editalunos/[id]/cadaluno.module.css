@@ -301,3 +301,28 @@
         width: 100%;
     }
 }
+
+/* Retorno à lista de alunos */
+
+.voltar {
+    margin-top: 30px;
+}
+
+.voltar a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    color: #e30613;
+
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+
+    transition: color 0.2s ease;
+}
+
+.voltar a:hover {
+    color: #b90610;
+    text-decoration: underline;
+}

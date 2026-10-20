@@ -1,138 +1,216 @@
+
 "use client";
 
-import { useEffect, useState, use } from "react";
-import { useRouter, useParams, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
+import Header from "../../components/header";
+import styles from "./cadaluno.module.css";
 
-export default function EditarAlunoPage({ params: paramsPromise }) {
+export default function EditarAlunoPage() {
     const router = useRouter();
-    const routeParams = useParams();
-    const searchParams = useSearchParams();
+    const params = useParams();
+    const id = params?.id;
 
-    // Tenta obter o ID a partir da rota [id] ou de query params (?id=1)
-    const resolvedParams = paramsPromise ? use(paramsPromise) : null;
-    const id = resolvedParams?.id || routeParams?.id || searchParams?.get("id");
-
-    const [id_aluno, setIdAluno] = useState("")
     const [nome, setNome] = useState("");
     const [idade, setIdade] = useState("");
     const [serie, setSerie] = useState("");
     const [ra, setRa] = useState("");
     const [carregando, setCarregando] = useState(true);
+    const [salvando, setSalvando] = useState(false);
+    const [erro, setErro] = useState("");
 
     useEffect(() => {
-        if (id) {
-            buscarAluno(id);
-        } else {
-            setCarregando(false);
-        }
-    }, [id]);
+        if (!id) return;
 
-    async function buscarAluno(idAluno) {
-        try {
-            setCarregando(true);
-            const resposta = await fetch(`/api/alunos/${idAluno}`);
+        let ativo = true;
 
-            if (!resposta.ok) {
-                alert("Aluno não encontrado!");
-                router.push("/listalunos");
-                return;
+        async function buscarAluno() {
+            try {
+                const resposta = await fetch(`/api/alunos/${id}`);
+
+                if (!resposta.ok) {
+                    throw new Error("Aluno não encontrado.");
+                }
+
+                const dados = await resposta.json();
+
+                if (ativo) {
+                    setNome(dados.nome ?? "");
+                    setIdade(dados.idade ?? "");
+                    setSerie(dados.serie ?? "");
+                    setRa(dados.ra ?? "");
+                }
+
+            } catch (error) {
+                console.error("Erro ao buscar aluno:", error);
+
+                if (ativo) {
+                    setErro("Não foi possível carregar o aluno.");
+                }
+
+            } finally {
+                if (ativo) {
+                    setCarregando(false);
+                }
             }
-
-            const dados = await resposta.json();
-            setIdAluno(dados.id_aluno || "");
-            setNome(dados.nome || "");
-            setIdade(dados.idade || "");
-            setSerie(dados.serie || "");
-            setRa(dados.ra || "");
-        } catch (erro) {
-            console.error("Erro ao carregar aluno:", erro);
-            alert("Erro ao carregar dados do aluno.");
-        } finally {
-            setCarregando(false);
         }
-    }
+
+        buscarAluno();
+
+        return () => {
+            ativo = false;
+        };
+    }, [id]);
 
     async function salvarAluno(event) {
         event.preventDefault();
+        setSalvando(true);
 
-        if (!id) {
-            alert("ID do aluno não foi encontrado.");
-            return;
+        try {
+            const resposta = await fetch("/api/alunos", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    id_aluno: Number(id),
+                    nome,
+                    idade,
+                    serie,
+                    ra
+                })
+            });
+
+            const dados = await resposta.json();
+
+            alert(dados.mensagem || dados.erro);
+
+            if (resposta.ok) {
+                router.push("/listalunos");
+            }
+
+        } catch (error) {
+            console.error("Erro ao editar aluno:", error);
+            alert("Não foi possível salvar as alterações.");
+
+        } finally {
+            setSalvando(false);
         }
-
-        const resposta = await fetch("/api/alunos", {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                id_aluno,
-                nome,
-                idade,
-                serie,
-                ra,
-            }),
-        });
-
-        const dados = await resposta.json();
-
-        alert(dados.mensagem || dados.erro);
-
-        if (resposta.ok) {
-            router.push("/listalunos");
-        }
-    }
-
-    if (carregando) {
-        return (
-            <main className="container">
-                <h1>Editar Aluno</h1>
-                <p>Carregando informações do aluno...</p>
-            </main>
-        );
     }
 
     return (
-        <main className="container">
-            <h1>Editar Aluno</h1>
+        <>
+            <Header />
 
-            <form onSubmit={salvarAluno} className="formulario">
-                <input type="text" value={id_aluno} onChange={(event) => setIdAluno(event.target.value)} hidden/>
-                <label>Nome</label>
-                <input
-                    value={nome}
-                    onChange={(event) => setNome(event.target.value)}
-                    required
-                />
+            <main className={styles.main}>
+                <section className={styles.container}>
+                    <div className={styles.painel}>
 
-                <label>Idade</label>
-                <input
-                    type="number"
-                    value={idade}
-                    onChange={(event) => setIdade(event.target.value)}
-                    required
-                />
+                        <p className={styles.status}>
+                            SISTEMA ONLINE ● EDIÇÃO DE ESTUDANTES
+                        </p>
 
-                <label>Série</label>
-                <input
-                    value={serie}
-                    onChange={(event) => setSerie(event.target.value)}
-                    placeholder="Ex.: 3º A"
-                    required
-                />
+                        <h2>Editar Aluno</h2>
 
-                <label>RA</label>
-                <input
-                    value={ra}
-                    onChange={(event) => setRa(event.target.value)}
-                    required
-                />
+                        {carregando ? (
+                            <div className={styles.form}>
+                                <p>Carregando informações do aluno...</p>
+                            </div>
+                        ) : erro ? (
+                            <div className={styles.form}>
+                                <p>{erro}</p>
+                            </div>
+                        ) : (
+                            <form
+                                className={styles.form}
+                                onSubmit={salvarAluno}
+                            >
+                                <div className={styles.campo}>
+                                    <label htmlFor="nome">
+                                        Nome Completo
+                                    </label>
 
-                <button type="submit">Salvar Alterações</button>
-            </form>
+                                    <input
+                                        id="nome"
+                                        type="text"
+                                        value={nome}
+                                        onChange={(e) =>
+                                            setNome(e.target.value)
+                                        }
+                                        required
+                                    />
+                                </div>
 
-            <Link href="/listalunos">Voltar</Link>
-        </main>
+                                <div className={styles.campo}>
+                                    <label htmlFor="idade">
+                                        Idade
+                                    </label>
+
+                                    <input
+                                        id="idade"
+                                        type="number"
+                                        min="1"
+                                        value={idade}
+                                        onChange={(e) =>
+                                            setIdade(e.target.value)
+                                        }
+                                        required
+                                    />
+                                </div>
+
+                                <div className={styles.campo}>
+                                    <label htmlFor="serie">
+                                        Série
+                                    </label>
+
+                                    <input
+                                        id="serie"
+                                        type="text"
+                                        value={serie}
+                                        onChange={(e) =>
+                                            setSerie(e.target.value)
+                                        }
+                                        required
+                                    />
+                                </div>
+
+                                <div className={styles.campo}>
+                                    <label htmlFor="ra">
+                                        RA
+                                    </label>
+
+                                    <input
+                                        id="ra"
+                                        type="text"
+                                        value={ra}
+                                        onChange={(e) =>
+                                            setRa(e.target.value)
+                                        }
+                                        required
+                                    />
+                                </div>
+
+                                <button
+                                    className={styles.botao}
+                                    type="submit"
+                                    disabled={salvando}
+                                >
+                                    {salvando
+                                        ? "Salvando..."
+                                        : "Salvar Alterações"}
+                                </button>
+                            </form>
+                        )}
+                    </div>
+
+                    <div className={styles.voltar}>
+                        <Link href="/listalunos">
+                            ← Voltar para Lista de Alunos
+                        </Link>
+                    </div>
+                </section>
+            </main>
+        </>
     );
 }
