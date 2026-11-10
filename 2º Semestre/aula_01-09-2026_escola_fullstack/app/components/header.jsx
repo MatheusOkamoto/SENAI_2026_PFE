@@ -4,63 +4,127 @@ import styles from "./header.module.css";
 import LogoutButton from "./logout-button";
 
 // ============================================
-// CABEÇALHO DO SISTEMA ESCOLAR
+// ITENS DOS MENUS
+// ============================================
+
+const menus = [
+    {
+        titulo: "Alunos",
+        links: [
+            { nome: "Cadastrar Aluno", href: "/cadalunos" },
+            { nome: "Listar Alunos", href: "/listalunos" }
+        ]
+    },
+    {
+        titulo: "Notas",
+        links: [
+            { nome: "Cadastrar Notas", href: "/cadnotas" },
+            { nome: "Listar Notas", href: "/listnotas" }
+        ]
+    },
+    {
+        titulo: "Disciplinas",
+        links: [
+            {
+                nome: "Cadastrar Disciplina",
+                href: "/caddisciplinas"
+            },
+            {
+                nome: "Listar Disciplinas",
+                href: "/listdisciplinas"
+            }
+        ]
+    },
+    {
+        titulo: "Professores",
+        links: [
+            {
+                nome: "Cadastrar Professor",
+                href: "/cadprofessores"
+            },
+            {
+                nome: "Listar Professores",
+                href: "/listprofessores"
+            }
+        ]
+    }
+];
+
+// ============================================
+// CABEÇALHO PRINCIPAL
 // ============================================
 
 export default function Header() {
     return (
         <header className={styles.header}>
+            <div className={styles.inner}>
 
-            {/* Logo do Sistema Escolar */}
-            <h1 className={styles.logo}>
-                Sistema Escolar - SESI
-            </h1>
+                {/* LOGO */}
 
-            {/* Menu de navegação */}
-            <nav aria-label="Navegação principal">
-                <ul className={styles.menu}>
+                <Link
+                    href="/principal"
+                    className={styles.brand}
+                >
+                    <span className={styles.brandMark}>
+                        SESI
+                    </span>
 
-                    {/* Página inicial */}
-                    <li>
-                        <Link href="/principal">
-                            Início
-                        </Link>
-                    </li>
+                    <span className={styles.brandText}>
+                        Sistema Escolar
+                        <small>Mirandópolis</small>
+                    </span>
+                </Link>
 
-                    {/* Cadastro de alunos */}
-                    <li>
-                        <Link href="/cadalunos">
-                            Cadastro - Alunos
-                        </Link>
-                    </li>
+                {/* NAVEGAÇÃO */}
 
-                    {/* Listagem de alunos */}
-                    <li>
-                        <Link href="/listalunos">
-                            Lista - Alunos
-                        </Link>
-                    </li>
+                <nav
+                    className={styles.navigation}
+                    aria-label="Navegação principal"
+                >
+                    <Link
+                        href="/principal"
+                        className={styles.home}
+                    >
+                        Início
+                    </Link>
 
-                    {/* Cadastro de notas */}
-                    <li>
-                        <Link href="/cadnotas">
-                            Cadastro - Notas
-                        </Link>
-                    </li>
+                    {menus.map((menu) => (
+                        <details
+                            key={menu.titulo}
+                            className={styles.dropdown}
+                        >
+                            <summary className={styles.trigger}>
+                                {menu.titulo}
 
-                    {/* Listagem de notas */}
-                    <li>
-                        <Link href="/listnotas">
-                            Lista - Notas
-                        </Link>
-                    </li>
+                                <span
+                                    className={styles.chevron}
+                                    aria-hidden="true"
+                                >
+                                    ▾
+                                </span>
+                            </summary>
 
-                    {/* Usuário autenticado e botão Sair */}
+                            <div className={styles.dropdownMenu}>
+                                {menu.links.map((link) => (
+                                    <Link
+                                        key={link.href}
+                                        href={link.href}
+                                    >
+                                        {link.nome}
+                                    </Link>
+                                ))}
+                            </div>
+                        </details>
+                    ))}
+                </nav>
+
+                {/* USUÁRIO E LOGOUT */}
+
+                <ul className={styles.conta}>
                     <LogoutButton />
-
                 </ul>
-            </nav>
 
+            </div>
         </header>
     );
 }

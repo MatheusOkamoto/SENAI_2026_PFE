@@ -17,9 +17,7 @@ db.pragma("foreign_keys = ON");
 
 db.exec(`
 
-    -- ========================================
     -- TABELA DE ALUNOS
-    -- ========================================
 
     CREATE TABLE IF NOT EXISTS alunos (
         id_aluno INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -30,9 +28,7 @@ db.exec(`
     );
 
 
-    -- ========================================
     -- TABELA DE NOTAS
-    -- ========================================
 
     CREATE TABLE IF NOT EXISTS notas (
         id_notas INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -49,9 +45,7 @@ db.exec(`
     );
 
 
-    -- ========================================
     -- TABELA DE USUÁRIOS
-    -- ========================================
 
     CREATE TABLE IF NOT EXISTS usuario (
         id_usuario INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -61,9 +55,7 @@ db.exec(`
     );
 
 
-    -- ========================================
     -- TABELA DE SESSÕES
-    -- ========================================
 
     CREATE TABLE IF NOT EXISTS sessoes (
         token TEXT PRIMARY KEY,
@@ -75,17 +67,50 @@ db.exec(`
         ON DELETE CASCADE
     );
 
-
-    -- ========================================
-    -- ÍNDICE PARA EXPIRAÇÃO DAS SESSÕES
-    -- ========================================
-
     CREATE INDEX IF NOT EXISTS idx_sessoes_expira_em
     ON sessoes(expira_em);
+
+
+    -- ========================================
+    -- TABELA DE DISCIPLINAS
+    -- ========================================
+
+    CREATE TABLE IF NOT EXISTS disciplinas (
+        id_disciplina INTEGER PRIMARY KEY AUTOINCREMENT,
+        nome TEXT NOT NULL UNIQUE,
+        pontuacao_minima REAL NOT NULL
+            CHECK (pontuacao_minima >= 0
+                AND pontuacao_minima <= 100)
+    );
+
+
+    -- ========================================
+    -- TABELA DE PROFESSORES
+    -- ========================================
+
+    CREATE TABLE IF NOT EXISTS professores (
+        id_professor INTEGER PRIMARY KEY AUTOINCREMENT,
+        nome TEXT NOT NULL,
+        nif TEXT NOT NULL UNIQUE,
+        dias_aula TEXT NOT NULL,
+        disciplina_id INTEGER NOT NULL,
+        total_aulas_semana INTEGER NOT NULL
+            CHECK (total_aulas_semana > 0),
+
+        FOREIGN KEY (disciplina_id)
+        REFERENCES disciplinas(id_disciplina)
+        ON DELETE RESTRICT
+    );
+
+
+    -- ÍNDICE PARA CONSULTAR PROFESSORES
+    -- POR DISCIPLINA
+
+    CREATE INDEX IF NOT EXISTS idx_professores_disciplina
+    ON professores(disciplina_id);
 
 `);
 
 console.log("Banco de dados inicializado com sucesso!");
 
-// Exportar a conexão
 export default db;
