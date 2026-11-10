@@ -1,48 +1,66 @@
+
 import Link from "next/link";
 import styles from "./header.module.css";
+import LogoutButton from "./logout-button";
+
+// ============================================
+// CABEÇALHO DO SISTEMA ESCOLAR
+// ============================================
 
 export default function Header() {
     return (
-        <>
-            <header className={styles.header}>
-                <h1 className={styles.logo}>
-                    Sistema Escolar - SESI
-                </h1>
+        <header className={styles.header}>
 
-                <nav>
-                    <ul className={styles.menu}>
-                        <li>
-                            <Link href="/">
-                                Início
-                            </Link>
-                        </li>
+            {/* Logo do Sistema Escolar */}
+            <h1 className={styles.logo}>
+                Sistema Escolar - SESI
+            </h1>
 
-                        <li>
-                            <Link href="/cadalunos">
-                                Cadastro - Alunos
-                            </Link>
-                        </li>
+            {/* Menu de navegação */}
+            <nav aria-label="Navegação principal">
+                <ul className={styles.menu}>
 
-                        <li>
-                            <Link href="/listalunos">
-                                Lista - Alunos
-                            </Link>
-                        </li>
+                    {/* Página inicial */}
+                    <li>
+                        <Link href="/principal">
+                            Início
+                        </Link>
+                    </li>
 
-                        <li>
-                            <Link href="/cadnotas">
-                                Cadastro - Notas
-                            </Link>
-                        </li>
+                    {/* Cadastro de alunos */}
+                    <li>
+                        <Link href="/cadalunos">
+                            Cadastro - Alunos
+                        </Link>
+                    </li>
 
-                        <li>
-                            <Link href="/listnotas">
-                                Lista - Notas
-                            </Link>
-                        </li>
-                    </ul>
-                </nav>
-            </header>
-        </>
+                    {/* Listagem de alunos */}
+                    <li>
+                        <Link href="/listalunos">
+                            Lista - Alunos
+                        </Link>
+                    </li>
+
+                    {/* Cadastro de notas */}
+                    <li>
+                        <Link href="/cadnotas">
+                            Cadastro - Notas
+                        </Link>
+                    </li>
+
+                    {/* Listagem de notas */}
+                    <li>
+                        <Link href="/listnotas">
+                            Lista - Notas
+                        </Link>
+                    </li>
+
+                    {/* Usuário autenticado e botão Sair */}
+                    <LogoutButton />
+
+                </ul>
+            </nav>
+
+        </header>
     );
 }
